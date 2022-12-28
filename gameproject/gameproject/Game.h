@@ -10,8 +10,8 @@ private:
 	//okno
 	sf::RenderWindow *window;
 	//zasoby
-	std::map<std::string, sf::Texture*> textures;
-	std::vector<Bullet*> bullets; // <Bullet*> - optymalizacja
+	std::map<std::string, sf::Texture*> textures; //para klucz-wartoœæ, gdzie kluczem jest nazwa tekstury, a wartoœci¹ jest wskaŸnik na obiekt Texture.
+	std::vector<Bullet*> bullets; // <Bullet*> - optymalizacja, jest mo¿liwoœæ dynamicznego dodawania i usuwania elementów oraz automatyczne dostosowywanie rozmiaru do liczby elementów
 	
 	//gracz
 	Player* player;

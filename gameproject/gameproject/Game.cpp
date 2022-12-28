@@ -81,17 +81,30 @@ void Game::updateInput()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		this->player->move(0.f, 1.f);
 
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && this->player->canAttack())
 	{
-		this->bullets.push_back(new Bullet(this->textures["BULLET"], this->player->getPos().x, this->player->getPos().y, 0.f, 0.f, 0.f)); //TODO co to robi
+		this->bullets.push_back(new Bullet(this->textures["BULLET"], this->player->getPos().x, this->player->getPos().y, 0.f, -1.f, 50.f)); //0.f, -1.f, 5.f kierunek kierunek predkosc pocisku
 	}
 }
 
 void Game::updateBullets()
 {
+	unsigned counter = 0;
 	for (auto* bullet : this->bullets)
 	{
 		bullet->update();
+
+		//usuwanie pocisku gdy wyjedzie z ekranu
+		if (bullet->getBounds().top + bullet->getBounds().height < 0.f)
+		{
+			//usuwanie
+			delete this->bullets.at(counter);
+			this->bullets.erase(this->bullets.begin() + counter);
+			--counter;
+
+			//std::cout << this->bullets.size() << "\n";
+		}
+		++counter; // mala optymalizacja wzgledem counter++
 	}
 }
 
@@ -99,6 +112,7 @@ void Game::update()
 {
 	this->updatePollEvent();
 	this->updateInput();
+	this->player->update();
 	this->updateBullets();
 }
 
