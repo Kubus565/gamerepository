@@ -18,6 +18,8 @@ void Game::initTextures()
 void Game::initPlayer()
 {
 	this->player = new Player();
+
+	this->enemy = new Enemy(20.f, 20.f);
 }
 
 Game::Game()
@@ -127,6 +129,8 @@ void Game::render()
 	{
 		bullet->render(this->window);
 	}
+
+	this->enemy->render(this->window);
 
 	this->window->display();
 }

@@ -1,6 +1,6 @@
 #pragma once
-//#ifndef BULLET_H 
-//#define BULLET_H
+#ifndef BULLET_H 
+#define BULLET_H
 // sposób na unikniêcie problemów zwi¹zanych z kilkukrotnym do³¹czeniem pliku nag³ówkowego
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -28,4 +28,5 @@ public:
 	void render(sf::RenderTarget * target);
 
 };
+#endif
 
