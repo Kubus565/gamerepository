@@ -1,9 +1,12 @@
 #include "Game.h"
-using namespace sf;
+
 //Funkcje prywatne
 void Game::initWindow()
 {
 	this->window = new sf::RenderWindow(sf::VideoMode(800, 600), "Gra", sf::Style::Close | sf::Style::Titlebar);
+	this->window->setFramerateLimit(60);
+	this->window->setVerticalSyncEnabled(false);
+
 }
 
 Game::Game()
@@ -28,7 +31,15 @@ void Game::run()
 
 void Game::update()
 {
-
+	sf::Event e;
+	while (this->window->pollEvent(e))
+	{
+		//mozna to w jednym ifie TODO
+		if (e.Event::type == sf::Event::Closed)
+			this->window->close();
+		if (e.Event::KeyPressed && e.Event::key.code == sf::Keyboard::Escape)
+			this->window->close();
+	}
 }
 
 void Game::render()
