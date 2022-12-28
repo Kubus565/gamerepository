@@ -28,13 +28,21 @@ Enemy::~Enemy()
 {
 
 }
+//dostep
+const sf::FloatRect Enemy::getBounds() const
+{
+	return this->shape.getGlobalBounds();
+}
+
 //funkcje
 void Enemy::update()
 {
-
+	this->shape.move(0.f, 2.f); //predkosc opadania wrogow
 }
 
 void Enemy::render(sf::RenderTarget* target)
 {
 	target->draw(this->shape);
 }
+
+

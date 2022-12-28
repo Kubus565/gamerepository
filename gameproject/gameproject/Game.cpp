@@ -4,7 +4,7 @@
 void Game::initWindow()
 {
 	this->window = new sf::RenderWindow(sf::VideoMode(800, 600), "Gra", sf::Style::Close | sf::Style::Titlebar);
-	this->window->setFramerateLimit(60);
+	this->window->setFramerateLimit(144);
 	this->window->setVerticalSyncEnabled(false);
 
 }
@@ -22,7 +22,7 @@ void Game::initPlayer()
 
 void Game::initEnemies()
 {
-	this->spawnTimer = 50.f;
+	this->spawnTimer = 0.f;
 		this->spawnTimer = this->spawnTimerMax;
 
 }
@@ -98,7 +98,7 @@ void Game::updateInput()
 	{
 		this->bullets.push_back(new Bullet(this->textures["BULLET"], 
 		this->player->getPos().x + this->player->getBounds().width/2.f, 
-		this->player->getPos().y, 0.f, -1.f, 50.f)); //0.f, -1.f, 5.f kierunek kierunek predkosc pocisku
+		this->player->getPos().y, 0.f, -1.f, 5.f)); //0.f, -1.f, 5.f kierunek kierunek predkosc pocisku
 	}
 }
 
@@ -128,14 +128,23 @@ void Game::updateEnemies()
 	this->spawnTimer += 0.5f;
 	if (this->spawnTimer >= this->spawnTimerMax)
 	{
-		this->enemies.push_back(new Enemy(rand() % 200, rand() % 200));
+		this->enemies.push_back(new Enemy(rand() % this->window->getSize().x - 20.f, rand() % -100));
 		this->spawnTimer = 0.f;
 	}
 
-	for (auto* enemy : this->enemies)
+	for (int i = 0; i < this->enemies.size(); i++)
 	{
-		enemy->update();
+		this->enemies[i]->update();
+
+		//usuwanie wrogow na dole ekranu
+		if (this->enemies[i]->getBounds().top > this->window->getSize().y)
+		{
+			this->enemies.erase(this->enemies.begin() + i);
+			std::cout << this->enemies.size() << "\n";
+		}
+
 	}
+	
 }
 
 void Game::update()
