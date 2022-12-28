@@ -9,15 +9,42 @@ void Game::initWindow()
 
 }
 
+void Game::initTextures()
+{
+	this->textures["BULLET"] = new sf::Texture();
+	this->textures["BULLET"]->loadFromFile("Textures/bullet.png");
+}
+
+void Game::initPlayer()
+{
+	this->player = new Player();
+}
+
 Game::Game()
 {
 	this->initWindow();
+	this->initTextures();
+	this->initPlayer();
+
 
 }
 
 Game::~Game()
 {
 	delete this->window;
+	delete this->player;
+
+	//usuwanie tekstur
+	for (auto &i : this->textures)
+	{
+		delete i.second; //TODO co to znaczy
+	}
+
+	//usuwanie pociskow
+	for (auto *i : this->bullets)
+	{
+		delete i;
+	}
 }
 //funkcje
 void Game::run()
@@ -29,7 +56,7 @@ void Game::run()
 	}
 }
 
-void Game::update()
+void Game::updatePollEvent()
 {
 	sf::Event e;
 	while (this->window->pollEvent(e))
@@ -42,9 +69,50 @@ void Game::update()
 	}
 }
 
+void Game::updateInput()
+{
+	//Poruszanie graczem
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		this->player->move(-1.f, 0.f);
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		this->player->move(1.f, 0.f);
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		this->player->move(0.f, -1.f);
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		this->player->move(0.f, 1.f);
+
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		this->bullets.push_back(new Bullet(this->textures["BULLET"], this->player->getPos().x, this->player->getPos().y, 0.f, 0.f, 0.f)); //TODO co to robi
+	}
+}
+
+void Game::updateBullets()
+{
+	for (auto* bullet : this->bullets)
+	{
+		bullet->update();
+	}
+}
+
+void Game::update()
+{
+	this->updatePollEvent();
+	this->updateInput();
+	this->updateBullets();
+}
+
 void Game::render()
 {
 	this->window->clear();
+	
+	//Rysowanie wszystkiego na ekranie
+	this->player->render(*this->window);
+
+	for (auto* bullet : this->bullets)
+	{
+		bullet->render(this->window);
+	}
 
 	this->window->display();
 }
