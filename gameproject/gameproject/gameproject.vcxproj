@@ -143,7 +143,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main1.cpp" />
-    <ClCompile Include="SzurajGame1.cpp" />
     <ClCompile Include="testyzpasem.cpp" />
     <ClCompile Include="trstdestruktora.cpp" />
   </ItemGroup>
