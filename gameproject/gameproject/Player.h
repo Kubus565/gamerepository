@@ -28,6 +28,7 @@ public:
 
 	//dostep
 	const sf::Vector2f& getPos() const;
+	const sf::FloatRect getBounds() const;
 
 	//funkcje
 	void move(const float dirX, const float dirY);
