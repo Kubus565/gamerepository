@@ -36,6 +36,11 @@ void Game::initWorld()
 	this->worldBachground.setTexture(this->worldBackgroundTex);
 }
 
+void Game::initSystems()
+{
+	this->points = 0;
+}
+
 void Game::initPlayer()
 {
 	this->player = new Player();
@@ -55,6 +60,7 @@ Game::Game()
 	this->initTextures();
 	this->initGUI();
 	this->initWorld();
+	this->initSystems();
 	this->initPlayer();
 	this->initEnemies();
 
@@ -128,7 +134,9 @@ void Game::updateInput()
 
 void Game::updateGUI()
 {
-
+	std::stringstream ss;
+	ss << "Punkty: " << this->points;
+	this->pointText.setString(ss.str());
 }
 
 void Game::updateWorld()
@@ -138,10 +146,28 @@ void Game::updateWorld()
 
 void Game::updateCollision() //zeby pojazd nie wychodzi³ poza ekran
 {
+	//lewa granica swiata
 	if (this->player->getBounds().left < 0.f)
 	{
 		this->player->setPosition(0.f, this->player->getBounds().top);
 	}
+	//prawa granica swiata
+	else if (this->player->getBounds().left + this->player->getBounds().width >= this->window->getSize().x )
+	{
+		this->player->setPosition(this->window->getSize().x - this->player->getBounds().width, this->player->getBounds().top);
+	}
+	//gorna granica swiata
+	if (this->player->getBounds().top < 0.f)
+	{
+		this->player->setPosition(this->player->getBounds().left, 0.f);
+	}
+	
+	//dolna granica swiata
+	else if (this->player->getBounds().top + this->player->getBounds().height >= this->window->getSize().y)
+	{
+		this->player->setPosition(this->player->getBounds().left, this->window->getSize().y - this->player->getBounds().height);
+	}
+	
 }
 
 void Game::updateBullets()
