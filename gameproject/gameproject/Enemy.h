@@ -19,7 +19,7 @@ public:
 	Enemy(float pos_x, float pos_y);
 
 	~Enemy();
-
+	 
 	//dostep
 	const sf::FloatRect getBounds() const;
 	

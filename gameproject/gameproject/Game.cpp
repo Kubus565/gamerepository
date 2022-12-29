@@ -32,11 +32,12 @@ void Game::initGUI()
 void Game::initPlayer()
 {
 	this->player = new Player();
+
 }
 
 void Game::initEnemies()
 {
-	this->spawnTimer = 50.f;
+	this->spawnTimerMax = 50.f;
 		this->spawnTimer = this->spawnTimerMax;
 
 }
@@ -113,7 +114,7 @@ void Game::updateInput()
 	{
 		this->bullets.push_back(new Bullet(this->textures["BULLET"], 
 		this->player->getPos().x + this->player->getBounds().width/2.f, 
-		this->player->getPos().y, 0.f, -1.f, 5.f)); //0.f, -1.f, 5.f kierunek kierunek predkosc pocisku
+		this->player->getPos().y, 0.f, -1.f, 14.f)); //0.f, -1.f, 5.f kierunek kierunek predkosc pocisku
 	}
 }
 
@@ -143,44 +144,58 @@ void Game::updateBullets()
 	}
 }
 
-void Game::updateEnemiesAndCombat()
+void Game::updateEnemies()
 {
+	//respienie
 	this->spawnTimer += 0.5f;
 	if (this->spawnTimer >= this->spawnTimerMax)
 	{
 		this->enemies.push_back(new Enemy(rand() % this->window->getSize().x - 20.f,  -100));
 		this->spawnTimer = 0.f;
 	}
+	//aktualizacja
+	unsigned counter = 0;
+	for (auto* enemy : this->enemies)
+	{
+		enemy->update();
 
+		//usuwanie wrogow gdy wyjedzie z ekranu
+		if (enemy->getBounds().top > this->window->getSize().y)
+		{
+			//usuwanie
+			delete this->enemies.at(counter);
+			this->enemies.erase(this->enemies.begin() + counter);
+			--counter;
+
+			//std::cout << this->bullets.size() << "\n";
+		}
+		++counter; // mala optymalizacja wzgledem counter++
+	}
+	
+	
+}
+
+void Game::updateCombat() // sprawdza w³asnie usuwanego przeciwnika i patrzy na nastepny pocisk
+{
 	for (int i = 0; i < this->enemies.size(); i++)
 	{
-		bool enemy_removed = false;
-		this->enemies[i]->update();
-
-		for (size_t k = 0; k < this->bullets.size() && !enemy_removed; k++)
+		bool enemy_deleted = false;
+		for (size_t k = 0; k < this->bullets.size() && enemy_deleted == false; k++) //sprawdzacz: je¿eli pocisk zabi³ kogos to omijamy ponizsza petle i przechodzimy do nastepnego wroga
 		{
-			if (this->bullets[k]->getBounds().intersects(this->enemies[i]->getBounds()))
+			if (this->enemies[i]->getBounds().intersects(this->bullets[k]->getBounds()))
 			{
+				delete this->enemies[i];
+				this->enemies.erase(this->enemies.begin() + i);
+
+				delete this->bullets[k];
 				this->bullets.erase(this->bullets.begin() + k);
-				this->enemies.erase(this->enemies.begin() + i);
-				enemy_removed = true;
-			}
-		}
 
-
-		//usuwanie wrogow na dole ekranu
-		if (!enemy_removed)
-		{
-			if (this->enemies[i]->getBounds().top > this->window->getSize().y)
-			{
-				this->enemies.erase(this->enemies.begin() + i);
-				std::cout << this->enemies.size() << "\n";
-				enemy_removed = true;
+				enemy_deleted = true;
 			}
+
 		}
 
 	}
-	
 }
 
 void Game::update()
@@ -189,7 +204,8 @@ void Game::update()
 	this->updateInput();
 	this->player->update();
 	this->updateBullets();
-	this->updateEnemiesAndCombat();
+	this->updateEnemies();
+	this->updateCombat();
 	this->updateGUI();
 }
 
@@ -214,7 +230,7 @@ void Game::render()
 	{
 		enemy->render(this->window);
 	}
-	
+
 	this->renderGUI();
 
 	this->window->display();
