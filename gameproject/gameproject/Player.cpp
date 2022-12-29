@@ -11,6 +11,7 @@ void Player::initVariables()
 
 	this->hpMax = 100;  //hp
 	this->hp = this->hpMax;
+
 }
 
 void Player::initTexture()

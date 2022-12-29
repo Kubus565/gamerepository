@@ -21,6 +21,9 @@ private:
 	sf::Text pointText;
 
 	sf::Text gameOverText;//over
+	sf::Text helpText;
+
+	bool isf1press;
 
 	//swiat
 	sf::Texture worldBackgroundTex;
@@ -55,8 +58,12 @@ public:
 	Game();
 	~Game();
 
+	const bool& getHelp() const;
+
 	void run();
 	
+	void keyListener();
+
 	void updatePollEvent();
 	void updateInput();
 	void updateGUI();

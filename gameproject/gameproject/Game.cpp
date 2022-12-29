@@ -1,5 +1,9 @@
 #include "Game.h"
 
+#pragma region Game_inicjalizacja
+
+
+
 //Funkcje prywatne
 void Game::initWindow()
 {
@@ -22,6 +26,7 @@ void Game::initGUI()
 		std::cout << "ERROR::GAME::Nie udalo sie zaladowac czcionki"<< " \n";
 
 	//wlaczenie punktora
+	this->pointText.setPosition(700.f, 25.f);
 	this->pointText.setFont(this->font);
 	this->pointText.setCharacterSize(30); //wielkosc czcionki
 	this->pointText.setFillColor(sf::Color::White); //kolor czcionki
@@ -29,14 +34,21 @@ void Game::initGUI()
 					
 				//over
 	this->gameOverText.setFont(this->font);
-	this->gameOverText.setCharacterSize(200); //wielkosc czcionki
+	this->gameOverText.setCharacterSize(100); //wielkosc czcionki
 	this->gameOverText.setFillColor(sf::Color::Red); //kolor czcionki
 	this->gameOverText.setString("Game Over!");
 	this->gameOverText.setPosition(
 		this->window->getSize().x / 2.f - this->gameOverText.getGlobalBounds().width / 2.f,
 		this->window->getSize().y / 2.f - this->gameOverText.getGlobalBounds().height / 2.f); // napis na srodku
 
-	//player GUI, HP
+	//strona help
+	this->helpText.setPosition(70.f, 25.f);
+	this->helpText.setFont(this->font);
+	this->helpText.setCharacterSize(40); //wielkosc czcionki
+	this->helpText.setFillColor(sf::Color::Green); //kolor czcionki
+	this->helpText.setString("klawisz F1 \n klawisz < ^ > ");
+																							  
+																							  //player GUI, HP
 	this->playerHpBar.setSize(sf::Vector2f(300.f, 25.f)); //pasek ¿ycia //hp
 	this->playerHpBar.setFillColor(sf::Color::Red);
 	this->playerHpBar.setPosition(sf::Vector2f(20.f, 20.f));
@@ -56,6 +68,7 @@ void Game::initWorld()
 void Game::initSystems()
 {
 	this->points = 0;
+
 }
 
 void Game::initPlayer()
@@ -70,7 +83,9 @@ void Game::initEnemies()
 		this->spawnTimer = this->spawnTimerMax;
 
 }
-
+#pragma endregion
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Game::Game()
 {
 	this->initWindow();
@@ -80,6 +95,9 @@ Game::Game()
 	this->initSystems();
 	this->initPlayer();
 	this->initEnemies();
+
+	this->isf1press = false;
+
 
 
 }
@@ -106,17 +124,30 @@ Game::~Game()
 		delete i;
 	}
 }
+
+const bool& Game::getHelp() const
+{
+	return this->isf1press;
+}
+
+
 //funkcje
 void Game::run()
 {
 	while (this->window->isOpen() )
 	{
 		this->updatePollEvent();	//over
-		if(this->player->getHp() > 0)	//over
+		this->keyListener(); //Mateusz od komentuje
+
+		if(this->player->getHp() > 0 && !isf1press)	//over
 		this->update();
+	
 	this->render();
 	}
 }
+#pragma region Updatingi
+
+
 
 void Game::updatePollEvent()
 {
@@ -142,12 +173,30 @@ void Game::updateInput()
 		this->player->move(0.f, -1.f);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		this->player->move(0.f, 1.f);
-
+	//strelanie
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && this->player->canAttack())
 	{
 		this->bullets.push_back(new Bullet(this->textures["BULLET"], 
 		this->player->getPos().x + this->player->getBounds().width/2.f, 
 		this->player->getPos().y, 0.f, -1.f, 14.f)); //0.f, -1.f, 5.f kierunek kierunek predkosc pocisku
+	}
+	//pomoc
+	//bool isf1press = false;
+	/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::F1))
+	{
+		isf1press =! isf1press;
+		
+	}*/
+
+}
+
+//funkcja mateusza
+void Game::keyListener()
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::F1))
+	{
+		isf1press = !isf1press;
+
 	}
 }
 
@@ -281,12 +330,12 @@ void Game::updateCombat() // sprawdza w³asnie usuwanego przeciwnika i patrzy na 
 
 	}
 }
-
+#pragma endregion
 void Game::update()
 {
 	//usuwam pollEvent bo jest wyzej
 	//this->updatePollEvent();
-	this->updateInput();
+	this->updateInput(); //Mateusz komentuje
 	this->player->update();
 	this->updateCollision();
 	this->updateBullets();
@@ -295,6 +344,10 @@ void Game::update()
 	this->updateGUI();
 	this->updateWorld();
 }
+
+
+#pragma region Rendery
+
 
 void Game::renderGUI()
 {
@@ -333,6 +386,10 @@ void Game::render()
 	//Game over //over
 	if (this->player->getHp() <= 0)	//over
 		this->window->draw(this->gameOverText);	//over
+	if (this->getHelp() == true)
+		this->window->draw(this->helpText);	
+
 
 	this->window->display();
 }
+#pragma endregion
