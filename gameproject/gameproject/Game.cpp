@@ -165,16 +165,17 @@ void Game::updatePollEvent()
 void Game::updateInput()
 {
 	//Poruszanie graczem
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		this->player->move(-1.f, 0.f);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		this->player->move(1.f, 0.f);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		this->player->move(0.f, -1.f);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 		this->player->move(0.f, 1.f);
 	//strelanie
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && this->player->canAttack())
+	//if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && this->player->canAttack())
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && this->player->canAttack())
 	{
 		this->bullets.push_back(new Bullet(this->textures["BULLET"], 
 		this->player->getPos().x + this->player->getBounds().width/2.f, 
