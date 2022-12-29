@@ -187,6 +187,7 @@ void Game::updateBullets()
 
 			//std::cout << this->bullets.size() << "\n";
 		}
+		
 		++counter; // mala optymalizacja wzgledem counter++
 	}
 }
@@ -216,6 +217,12 @@ void Game::updateEnemies()
 
 			//std::cout << this->bullets.size() << "\n";
 		}
+		else if (enemy->getBounds().intersects(this->player->getBounds())) //jezeli wrog dotknie gracza
+		{
+			delete this->enemies.at(counter);
+			this->enemies.erase(this->enemies.begin() + counter);
+			--counter;
+		}
 		++counter; // mala optymalizacja wzgledem counter++
 	}
 	
@@ -231,12 +238,16 @@ void Game::updateCombat() // sprawdza w³asnie usuwanego przeciwnika i patrzy na 
 		{
 			if (this->enemies[i]->getBounds().intersects(this->bullets[k]->getBounds()))
 			{
+				//punkty za zabojstwo
+				this->points += this->enemies[i]->getPoints();
+
 				delete this->enemies[i];
 				this->enemies.erase(this->enemies.begin() + i);
 
 				delete this->bullets[k];
 				this->bullets.erase(this->bullets.begin() + k);
 
+				
 				enemy_deleted = true;
 			}
 
