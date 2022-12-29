@@ -41,6 +41,11 @@ const int& Enemy::getPoints() const
 	return this->points;
 }
 
+const int& Enemy::getDamage() const
+{
+	return this->damage; //end
+}
+
 //funkcje
 void Enemy::update()
 {

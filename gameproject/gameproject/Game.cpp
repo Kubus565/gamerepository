@@ -23,9 +23,26 @@ void Game::initGUI()
 
 	//wlaczenie punktora
 	this->pointText.setFont(this->font);
-	this->pointText.setCharacterSize(122); //wielkosc czcionki
+	this->pointText.setCharacterSize(30); //wielkosc czcionki
 	this->pointText.setFillColor(sf::Color::White); //kolor czcionki
 	this->pointText.setString("test");
+					
+				//over
+	this->gameOverText.setFont(this->font);
+	this->gameOverText.setCharacterSize(200); //wielkosc czcionki
+	this->gameOverText.setFillColor(sf::Color::Red); //kolor czcionki
+	this->gameOverText.setString("Game Over!");
+	this->gameOverText.setPosition(
+		this->window->getSize().x / 2.f - this->gameOverText.getGlobalBounds().width / 2.f,
+		this->window->getSize().y / 2.f - this->gameOverText.getGlobalBounds().height / 2.f); // napis na srodku
+
+	//player GUI, HP
+	this->playerHpBar.setSize(sf::Vector2f(300.f, 25.f)); //pasek ¿ycia //hp
+	this->playerHpBar.setFillColor(sf::Color::Red);
+	this->playerHpBar.setPosition(sf::Vector2f(20.f, 20.f));
+
+	this->playerHpBarBack = this->playerHpBar;
+	this->playerHpBarBack.setFillColor(sf::Color(25, 25, 25, 200));
 
 }
 
@@ -92,9 +109,11 @@ Game::~Game()
 //funkcje
 void Game::run()
 {
-	while (this->window->isOpen())
+	while (this->window->isOpen() )
 	{
-	this->update();
+		this->updatePollEvent();	//over
+		if(this->player->getHp() > 0)	//over
+		this->update();
 	this->render();
 	}
 }
@@ -134,9 +153,15 @@ void Game::updateInput()
 
 void Game::updateGUI()
 {
-	std::stringstream ss;
+	std::stringstream ss; //liczba punktow
 	ss << "Punkty: " << this->points;
 	this->pointText.setString(ss.str());
+
+	//aktualizacja paska hp
+	//this->player->setHp(5); //test paska hp
+	float hpPercent = static_cast<float>(this->player->getHp()) / this->player->getHpMax();
+	this->playerHpBar.setSize(sf::Vector2f(300.f * hpPercent, this->playerHpBar.getSize().y));
+
 }
 
 void Game::updateWorld()
@@ -183,7 +208,6 @@ void Game::updateBullets()
 			//usuwanie
 			delete this->bullets.at(counter);
 			this->bullets.erase(this->bullets.begin() + counter);
-			--counter;
 
 			//std::cout << this->bullets.size() << "\n";
 		}
@@ -210,18 +234,20 @@ void Game::updateEnemies()
 		//usuwanie wrogow gdy wyjedzie z ekranu
 		if (enemy->getBounds().top > this->window->getSize().y)
 		{
-			//usuwanie
+			//usuwanie wrogow
 			delete this->enemies.at(counter);
 			this->enemies.erase(this->enemies.begin() + counter);
-			--counter;
 
 			//std::cout << this->bullets.size() << "\n";
 		}
-		else if (enemy->getBounds().intersects(this->player->getBounds())) //jezeli wrog dotknie gracza
+		//jezeli wrog dotknie gracza
+		else if (enemy->getBounds().intersects(this->player->getBounds())) 
 		{
+			this->player->loseHp(this->enemies.at(counter)->getDamage()); //end
+			
 			delete this->enemies.at(counter);
 			this->enemies.erase(this->enemies.begin() + counter);
-			--counter;
+
 		}
 		++counter; // mala optymalizacja wzgledem counter++
 	}
@@ -258,7 +284,8 @@ void Game::updateCombat() // sprawdza w³asnie usuwanego przeciwnika i patrzy na 
 
 void Game::update()
 {
-	this->updatePollEvent();
+	//usuwam pollEvent bo jest wyzej
+	//this->updatePollEvent();
 	this->updateInput();
 	this->player->update();
 	this->updateCollision();
@@ -272,6 +299,8 @@ void Game::update()
 void Game::renderGUI()
 {
 	this->window->draw(this->pointText);
+	this->window->draw(this->playerHpBarBack); //hp
+	this->window->draw(this->playerHpBar);
 }
 
 void Game::renderWorld()
@@ -300,6 +329,10 @@ void Game::render()
 	}
 
 	this->renderGUI();
+
+	//Game over //over
+	if (this->player->getHp() <= 0)	//over
+		this->window->draw(this->gameOverText);	//over
 
 	this->window->display();
 }

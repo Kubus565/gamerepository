@@ -14,12 +14,17 @@ private:
 
 	float attackCooldown;
 	float attackCooldownMax;
+
+	int hp;
+	int hpMax;
+
 	//tu nie moze byc  "="
 	
 	//funkcje prywatne
 	void initVariables();
 	void initTexture();
 	void initSprite();
+
 
 
 public:
@@ -29,10 +34,14 @@ public:
 	//dostep
 	const sf::Vector2f& getPos() const;
 	const sf::FloatRect getBounds() const;
+	const int& getHp() const; //hp
+	const int& getHpMax() const;
 
 	//modyfikacje
 	void setPosition(const sf::Vector2f pos);
 	void setPosition(const float x, const float y);
+	void setHp(const int hp);  //do hp
+	void loseHp(const int value);
 
 	//funkcje
 	void move(const float dirX, const float dirY);

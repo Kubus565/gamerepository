@@ -21,9 +21,10 @@ public:
 
 	~Enemy();
 	 
-	//dostep
+	//dostep, stworzenie nowych funkcji
 	const sf::FloatRect getBounds() const;
 	const int& getPoints() const; //ile punktow da mi kazdy wrog
+	const int& getDamage() const;
 	
 	//funkcje
 	void update();
