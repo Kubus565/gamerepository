@@ -4,7 +4,7 @@
 void Player::initVariables()
 {
 	//predkosc gracza
-	this->movementSpeed = 10.f;
+	this->movementSpeed = 10.f; //predkosc statku
 
 	this->attackCooldownMax = 10.f;
 	this->attackCooldown = this->attackCooldownMax;

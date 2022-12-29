@@ -15,6 +15,20 @@ void Game::initTextures()
 	this->textures["BULLET"]->loadFromFile("Textures/bullet.png");
 }
 
+void Game::initGUI()
+{
+	//ladowanie czcionek
+	if (!this->font.loadFromFile("Fonts/PixellettersFull.ttf"))
+		std::cout << "ERROR::GAME::Nie udalo sie zaladowac czcionki"<< " \n";
+
+	//wlaczenie punktora
+	this->pointText.setFont(this->font);
+	this->pointText.setCharacterSize(122); //wielkosc czcionki
+	this->pointText.setFillColor(sf::Color::White); //kolor czcionki
+	this->pointText.setString("test");
+
+}
+
 void Game::initPlayer()
 {
 	this->player = new Player();
@@ -22,7 +36,7 @@ void Game::initPlayer()
 
 void Game::initEnemies()
 {
-	this->spawnTimer = 0.f;
+	this->spawnTimer = 50.f;
 		this->spawnTimer = this->spawnTimerMax;
 
 }
@@ -31,6 +45,7 @@ Game::Game()
 {
 	this->initWindow();
 	this->initTextures();
+	this->initGUI();
 	this->initPlayer();
 	this->initEnemies();
 
@@ -102,6 +117,11 @@ void Game::updateInput()
 	}
 }
 
+void Game::updateGUI()
+{
+
+}
+
 void Game::updateBullets()
 {
 	unsigned counter = 0;
@@ -123,24 +143,40 @@ void Game::updateBullets()
 	}
 }
 
-void Game::updateEnemies()
+void Game::updateEnemiesAndCombat()
 {
 	this->spawnTimer += 0.5f;
 	if (this->spawnTimer >= this->spawnTimerMax)
 	{
-		this->enemies.push_back(new Enemy(rand() % this->window->getSize().x - 20.f, rand() % -100));
+		this->enemies.push_back(new Enemy(rand() % this->window->getSize().x - 20.f,  -100));
 		this->spawnTimer = 0.f;
 	}
 
 	for (int i = 0; i < this->enemies.size(); i++)
 	{
+		bool enemy_removed = false;
 		this->enemies[i]->update();
 
-		//usuwanie wrogow na dole ekranu
-		if (this->enemies[i]->getBounds().top > this->window->getSize().y)
+		for (size_t k = 0; k < this->bullets.size() && !enemy_removed; k++)
 		{
-			this->enemies.erase(this->enemies.begin() + i);
-			std::cout << this->enemies.size() << "\n";
+			if (this->bullets[k]->getBounds().intersects(this->enemies[i]->getBounds()))
+			{
+				this->bullets.erase(this->bullets.begin() + k);
+				this->enemies.erase(this->enemies.begin() + i);
+				enemy_removed = true;
+			}
+		}
+
+
+		//usuwanie wrogow na dole ekranu
+		if (!enemy_removed)
+		{
+			if (this->enemies[i]->getBounds().top > this->window->getSize().y)
+			{
+				this->enemies.erase(this->enemies.begin() + i);
+				std::cout << this->enemies.size() << "\n";
+				enemy_removed = true;
+			}
 		}
 
 	}
@@ -153,7 +189,13 @@ void Game::update()
 	this->updateInput();
 	this->player->update();
 	this->updateBullets();
-	this->updateEnemies();
+	this->updateEnemiesAndCombat();
+	this->updateGUI();
+}
+
+void Game::renderGUI()
+{
+	this->window->draw(this->pointText);
 }
 
 void Game::render()
@@ -172,7 +214,8 @@ void Game::render()
 	{
 		enemy->render(this->window);
 	}
-
+	
+	this->renderGUI();
 
 	this->window->display();
 }

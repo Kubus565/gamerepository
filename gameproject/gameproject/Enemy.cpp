@@ -10,6 +10,7 @@ void Enemy::initShape()
 void Enemy::initVariables()
 {
 	this->type    = 0;
+	this->speed   = 3.f; //INFO
 	this->hpMax   = 10;
 	this->hp      = 0;
 	this->damage  = 1;
@@ -37,7 +38,8 @@ const sf::FloatRect Enemy::getBounds() const
 //funkcje
 void Enemy::update()
 {
-	this->shape.move(0.f, 2.f); //predkosc opadania wrogow
+	this->shape.move(0.f, this->speed); //predkosc opadania wrogow
+	// jak zmienic stala w zmienna INFO
 }
 
 void Enemy::render(sf::RenderTarget* target)
