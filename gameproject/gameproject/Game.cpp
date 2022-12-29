@@ -29,6 +29,13 @@ void Game::initGUI()
 
 }
 
+void Game::initWorld()
+{
+	if (!this->worldBackgroundTex.loadFromFile("textures/background1.jpg"))
+		std::cout << "ERROR::GAMECPP::Blad ladowania tla" << "\n";
+	this->worldBachground.setTexture(this->worldBackgroundTex);
+}
+
 void Game::initPlayer()
 {
 	this->player = new Player();
@@ -47,6 +54,7 @@ Game::Game()
 	this->initWindow();
 	this->initTextures();
 	this->initGUI();
+	this->initWorld();
 	this->initPlayer();
 	this->initEnemies();
 
@@ -121,6 +129,19 @@ void Game::updateInput()
 void Game::updateGUI()
 {
 
+}
+
+void Game::updateWorld()
+{
+
+}
+
+void Game::updateCollision() //zeby pojazd nie wychodzi³ poza ekran
+{
+	if (this->player->getBounds().left < 0.f)
+	{
+		this->player->setPosition(0.f, this->player->getBounds().top);
+	}
 }
 
 void Game::updateBullets()
@@ -203,10 +224,12 @@ void Game::update()
 	this->updatePollEvent();
 	this->updateInput();
 	this->player->update();
+	this->updateCollision();
 	this->updateBullets();
 	this->updateEnemies();
 	this->updateCombat();
 	this->updateGUI();
+	this->updateWorld();
 }
 
 void Game::renderGUI()
@@ -214,11 +237,19 @@ void Game::renderGUI()
 	this->window->draw(this->pointText);
 }
 
+void Game::renderWorld()
+{
+	this->window->draw(this->worldBachground);
+}
+
 void Game::render()
 {
 	this->window->clear();
+
+	//rysowanie tla
+	this->renderWorld();
 	
-	//Rysowanie wszystkiego na ekranie
+	//Rysowanie wszystkich rzeczy
 	this->player->render(*this->window);
 
 	for (auto* bullet : this->bullets)
