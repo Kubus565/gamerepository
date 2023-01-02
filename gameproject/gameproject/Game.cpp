@@ -1,22 +1,19 @@
 #include "Game.h"
-
 #pragma region Game_inicjalizacja
-
-
-
 //Funkcje prywatne
 void Game::initWindow()
 {
 	this->window = new sf::RenderWindow(sf::VideoMode(800, 600), "Gra", sf::Style::Close | sf::Style::Titlebar);
 	this->window->setFramerateLimit(144);
 	this->window->setVerticalSyncEnabled(false);
-
 }
 
 void Game::initTextures()
 {
 	this->textures["BULLET"] = new sf::Texture();
 	this->textures["BULLET"]->loadFromFile("Textures/bullet.png");
+	this->textures["POLICE"] = new sf::Texture();
+	this->textures["POLICE"]->loadFromFile("Textures/police.png");
 }
 
 void Game::initGUI()
@@ -26,7 +23,7 @@ void Game::initGUI()
 		std::cout << "ERROR::GAME::Nie udalo sie zaladowac czcionki"<< " \n";
 
 	//wlaczenie punktora
-	this->pointText.setPosition(700.f, 25.f);
+	this->pointText.setPosition(600.f, 25.f);
 	this->pointText.setFont(this->font);
 	this->pointText.setCharacterSize(30); //wielkosc czcionki
 	this->pointText.setFillColor(sf::Color::White); //kolor czcionki
@@ -68,23 +65,25 @@ void Game::initWorld()
 void Game::initSystems()
 {
 	this->points = 0;
-
 }
 
 void Game::initPlayer()
 {
 	this->player = new Player();
-
 }
 
 void Game::initEnemies()
 {
 	this->spawnTimerMax = 50.f;
 		this->spawnTimer = this->spawnTimerMax;
-
+}
+void Game::initPolice()
+{
+	this->policeSpawnTimerMax = 50.f;
+	this->policeSpawnTimer = this->policeSpawnTimerMax;
 }
 #pragma endregion
-// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// koniec initów %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Game::Game()
 {
@@ -92,13 +91,12 @@ Game::Game()
 	this->initTextures();
 	this->initGUI();
 	this->initWorld();
-	this->initSystems();
+	this->initSystems(); //punkty
 	this->initPlayer();
 	this->initEnemies();
+	this->initPolice();
 
 	this->isf1press = false;
-
-
 
 }
 
@@ -123,13 +121,18 @@ Game::~Game()
 	{
 		delete i;
 	}
+	//usuwanie policji
+	for (auto* i : this->polices)
+	{
+		delete i;
+	}
+
 }
 
 const bool& Game::getHelp() const
 {
 	return this->isf1press;
 }
-
 
 //funkcje
 void Game::run()
@@ -145,10 +148,8 @@ void Game::run()
 	this->render();
 	}
 }
+
 #pragma region Updatingi
-
-
-
 void Game::updatePollEvent()
 {
 	sf::Event e;
@@ -161,7 +162,6 @@ void Game::updatePollEvent()
 			this->window->close();
 	}
 }
-
 void Game::updateInput()
 {
 	//Poruszanie graczem
@@ -190,7 +190,6 @@ void Game::updateInput()
 	}*/
 
 }
-
 //funkcja mateusza
 void Game::keyListener()
 {
@@ -200,7 +199,6 @@ void Game::keyListener()
 
 	}
 }
-
 void Game::updateGUI()
 {
 	std::stringstream ss; //liczba punktow
@@ -213,12 +211,10 @@ void Game::updateGUI()
 	this->playerHpBar.setSize(sf::Vector2f(300.f * hpPercent, this->playerHpBar.getSize().y));
 
 }
-
 void Game::updateWorld()
 {
 
 }
-
 void Game::updateCollision() //zeby pojazd nie wychodzi³ poza ekran
 {
 	//lewa granica swiata
@@ -244,7 +240,6 @@ void Game::updateCollision() //zeby pojazd nie wychodzi³ poza ekran
 	}
 	
 }
-
 void Game::updateBullets()
 {
 	unsigned counter = 0;
@@ -265,7 +260,6 @@ void Game::updateBullets()
 		++counter; // mala optymalizacja wzgledem counter++
 	}
 }
-
 void Game::updateEnemies()
 {
 	//respienie
@@ -297,14 +291,45 @@ void Game::updateEnemies()
 			
 			delete this->enemies.at(counter);
 			this->enemies.erase(this->enemies.begin() + counter);
-
 		}
 		++counter; // mala optymalizacja wzgledem counter++
 	}
-	
-	
 }
+void Game::updatePolice()
+{
+	//respienie
+	this->policeSpawnTimer += 0.5f;
+	if (this->policeSpawnTimer >= this->policeSpawnTimerMax)
+	{
+		this->polices.push_back(new Police(this->textures["POLICE"], rand() % this->window->getSize().x - 20.f, 100));
+		this->policeSpawnTimer = 0.f;
+	}
+	//aktualizacja
+	unsigned counter = 0;
+	for (auto* police : this->polices)
+	{
+		police->update();
 
+		//usuwanie wrogow gdy wyjedzie z ekranu
+		if (police->getBounds().top > this->window->getSize().y)
+		{
+			//usuwanie wrogow
+			delete this->polices.at(counter);
+			this->polices.erase(this->polices.begin() + counter);
+
+			//std::cout << this->bullets.size() << "\n";
+		}
+		//jezeli wrog dotknie gracza
+		else if (police->getBounds().intersects(this->player->getBounds()))
+		{
+			this->player->loseHp(this->polices.at(counter)->getDamage()); //end
+
+			delete this->polices.at(counter);
+			this->polices.erase(this->polices.begin() + counter);
+		}
+		++counter; // mala optymalizacja wzgledem counter++
+	}
+}
 void Game::updateCombat() // sprawdza w³asnie usuwanego przeciwnika i patrzy na nastepny pocisk
 {
 	for (int i = 0; i < this->enemies.size(); i++)
@@ -322,13 +347,10 @@ void Game::updateCombat() // sprawdza w³asnie usuwanego przeciwnika i patrzy na 
 
 				delete this->bullets[k];
 				this->bullets.erase(this->bullets.begin() + k);
-
 				
 				enemy_deleted = true;
 			}
-
 		}
-
 	}
 }
 #pragma endregion
@@ -341,27 +363,23 @@ void Game::update()
 	this->updateCollision();
 	this->updateBullets();
 	this->updateEnemies();
+	this->updatePolice();
 	this->updateCombat();
 	this->updateGUI();
 	this->updateWorld();
 }
 
-
 #pragma region Rendery
-
-
 void Game::renderGUI()
 {
 	this->window->draw(this->pointText);
 	this->window->draw(this->playerHpBarBack); //hp
 	this->window->draw(this->playerHpBar);
 }
-
 void Game::renderWorld()
 {
 	this->window->draw(this->worldBachground);
 }
-
 void Game::render()
 {
 	this->window->clear();
@@ -381,6 +399,12 @@ void Game::render()
 	{
 		enemy->render(this->window);
 	}
+	
+	for (auto* police : this->polices)
+	{
+		police->render(this->window);
+	}
+
 
 	this->renderGUI();
 

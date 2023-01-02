@@ -11,7 +11,6 @@ void Player::initVariables()
 
 	this->hpMax = 100;  //hp
 	this->hp = this->hpMax;
-
 }
 
 void Player::initTexture()
@@ -89,8 +88,6 @@ void Player::move(const float dirX, const float dirY)
 	this->sprite.move(this->movementSpeed * dirX, this->movementSpeed * dirY);
 }
 
-
-
 const bool Player::canAttack()
 {
 	if (this->attackCooldown >= this->attackCooldownMax)
@@ -101,8 +98,6 @@ const bool Player::canAttack()
 	
 	return false;
 }
-
-
 
 void Player::updateAttack()
 {

@@ -24,9 +24,9 @@ public:
 	//dostep
 	const sf::FloatRect getBounds() const;
 
+
 	void update();
 	void render(sf::RenderTarget * target);
-
 };
 #endif
 

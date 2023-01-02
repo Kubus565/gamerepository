@@ -2,7 +2,6 @@
 
 //relikty: main1 testyzpasem trstdestruktora
 
-//jutro GAME3/PART 10
 #include <time.h>
 #include "Game.h"
 

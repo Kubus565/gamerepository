@@ -19,13 +19,11 @@ private:
 	int hpMax;
 
 	//tu nie moze byc  "="
-	
+
 	//funkcje prywatne
 	void initVariables();
 	void initTexture();
 	void initSprite();
-
-
 
 public:
 	Player();

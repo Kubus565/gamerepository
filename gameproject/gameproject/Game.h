@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "Enemy.h"
+#include "Police.h"
 
 class Game
 {
@@ -13,8 +14,11 @@ private:
 	//okno
 	sf::RenderWindow *window;
 	//zasoby
-	std::map<std::string, sf::Texture*> textures; //para klucz-wartoœæ, gdzie kluczem jest nazwa tekstury, a wartoœci¹ jest wskaŸnik na obiekt Texture.
-	std::vector<Bullet*> bullets; // <Bullet*> - optymalizacja, jest mo¿liwoœæ dynamicznego dodawania i usuwania elementów oraz automatyczne dostosowywanie rozmiaru do liczby elementów
+	
+	std::map<std::string, sf::Texture*> textures; 
+	//para klucz-wartoœæ, gdzie kluczem jest nazwa tekstury, a wartoœci¹ jest wskaŸnik na obiekt Texture.
+	std::vector<Bullet*> bullets;
+	// <Bullet*> - optymalizacja, jest mo¿liwoœæ dynamicznego dodawania i usuwania elementów oraz automatyczne dostosowywanie rozmiaru do liczby elementów
 	
 	//interface
 	sf::Font font;
@@ -44,6 +48,12 @@ private:
 	float spawnTimerMax;
 	std::vector<Enemy*> enemies;
 
+	//police
+	float policeSpawnTimer;
+	float policeSpawnTimerMax;
+	std::vector<Police*> polices;
+
+
 	
 	//funkcje prywatne
 	void initWindow();		//przypisanie wartosci poczatkowych
@@ -52,7 +62,12 @@ private:
 	void initWorld();
 	void initSystems();
 	void initPlayer();
-	void initEnemies();
+	void initEnemies(); 
+	void initPolice(); //do police
+	
+	
+	
+
 
 public:
 	Game();
@@ -71,13 +86,11 @@ public:
 	void updateCollision();
 	void updateBullets();
 	void updateEnemies();
+	void updatePolice(); //do police
 	void updateCombat();
 	void update();
 	void renderGUI();
 	void renderWorld();
 	void render();
-
-
-
 };
 
