@@ -58,7 +58,7 @@ void Game::initGUI()
 
 void Game::initWorld()
 {
-	if (!this->worldBackgroundTex.loadFromFile("textures/background1.jpg"))
+	if (!this->worldBackgroundTex.loadFromFile("textures/background1.png"))
 		std::cout << "ERROR::GAMECPP::Blad ladowania tla" << "\n";
 	this->worldBachground.setTexture(this->worldBackgroundTex);
 }
@@ -190,14 +190,16 @@ void Game::updateInput()
 	}*/
 
 }
+
 //funkcja mateusza
 void Game::keyListener()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::F1))
 	{
-		isf1press = !isf1press;
-
+		//isf1press = !isf1press;
+		isf1press = true;
 	}
+	else isf1press = false;
 }
 void Game::updateGUI()
 {
@@ -301,7 +303,8 @@ void Game::updatePolice()
 	this->policeSpawnTimer += 0.5f;
 	if (this->policeSpawnTimer >= this->policeSpawnTimerMax)
 	{
-		this->polices.push_back(new Police(this->textures["POLICE"], rand() % this->window->getSize().x - 20.f, 100));
+		this->polices.push_back(new Police(this->textures["POLICE"], rand() % 212 + 44, 100));
+		this->polices.push_back(new Police(this->textures["POLICE"], rand() % 199 + 454, 200));
 		this->policeSpawnTimer = 0.f;
 	}
 	//aktualizacja

@@ -3,10 +3,8 @@
 void Police::initVariables()
 {
 	
-	//this->pointCount = rand() % 4 + 1; //od 0 do 3 +1 
-	this->rotationPointCount = rand() % 3 + 1; //wybor kierunku
+	this->direction = rand() % 5 + 1; //wybor kierunku
 	this->scrollingSpeed = 1;
-
 	this->hpMax = 10;
 	this->hp = this->hpMax;
 	this->damage = 1;
@@ -20,24 +18,38 @@ Police::Police(sf::Texture* texture, float pos_x, float pos_y)
 	this->sprite.setPosition(pos_x, pos_y);
 	//this->sprite.setScale(1.f, -1.f);
 
-	switch (rotationPointCount)
+	switch (direction)
 	{
+	
+	
 	case 1:
 		this->sprite.setRotation(90);
-		this->speedX = rand() % 3;
+		this->speedX = -(rand() % 3);
 		this->speedY = this->scrollingSpeed;
-
+		std::cout << direction;
 		break;
 	case 2:
-		this->sprite.setRotation(180);
+		this->sprite.setRotation(270);
+		this->speedX = rand() % 3;
+		this->speedY = this->scrollingSpeed;
+		std::cout << direction;
+		break;
+	case 3:
+		//this->sprite.setRotation(180);
 		this->speedX = 0;
 		this->speedY = this->scrollingSpeed + (rand() % 3);
 		break;
-	case 3:
-		this->sprite.setRotation(270);
-		this->speedX = -(rand() % 3);
-		this->speedY = this->scrollingSpeed;
+	case 4:
+		//this->sprite.setRotation(180);
+		this->speedX = 0;
+		this->speedY = this->scrollingSpeed + (rand() % 3);
 		break;
+	case 5:
+		//this->sprite.setRotation(180);
+		this->speedX = 0;
+		this->speedY = 3/2; //czasami wywala b³¹d
+		break;
+	
 	default:
 		std::cout << "blad w police >> switch case";
 		break;

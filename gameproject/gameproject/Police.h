@@ -1,12 +1,10 @@
 #pragma once
 #include "Bullet.h"
-class Police :
-    public Bullet
+
+class Police 
 {
 private:
-    unsigned pointCount;
-    unsigned rotationPointCount;
-    //unsigned randomSection;
+    unsigned direction;
     sf::Sprite sprite;
     sf::Texture texture;
     int hp;
