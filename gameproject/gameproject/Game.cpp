@@ -15,6 +15,8 @@ void Game::initTextures()
 	this->textures["BULLET"]->loadFromFile("Textures/bullet.png");
 	this->textures["POLICE"] = new sf::Texture();
 	this->textures["POLICE"]->loadFromFile("Textures/police.png");
+	this->textures["LINE"] = new sf::Texture();
+	this->textures["LINE"]->loadFromFile("Textures/line.png");
 }
 
 void Game::initGUI()
@@ -83,6 +85,11 @@ void Game::initPolice()
 	this->policeSpawnTimerMax = 50.f;
 	this->policeSpawnTimer = this->policeSpawnTimerMax;
 }
+void Game::initLine()
+{
+	this->lineSpawnTimerMax = 2.f;
+	this->lineSpawnTimer = this->lineSpawnTimerMax;
+}
 #pragma endregion
 // koniec initów %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -96,6 +103,7 @@ Game::Game()
 	this->initPlayer();
 	this->initEnemies();
 	this->initPolice();
+	this->initLine();
 
 	this->isf1press = false;
 
@@ -124,6 +132,11 @@ Game::~Game()
 	}
 	//usuwanie policji
 	for (auto* i : this->polices)
+	{
+		delete i;
+	}
+	//usuwanie lini
+	for (auto* i : this->lines)
 	{
 		delete i;
 	}
@@ -178,7 +191,7 @@ void Game::updateInput()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && this->player->canAttack())
 	{
 		this->bullets.push_back(new Bullet(this->textures["BULLET"], 
-		this->player->getPos().x + this->player->getBounds().width/2.f, 
+		this->player->getPos().x + this->player->getBounds().width/2.f - 5.0f, 
 		this->player->getPos().y, 0.f, -1.f, 14.f)); //0.f, -1.f, 5.f kierunek kierunek predkosc pocisku
 	}
 	//pomoc
@@ -303,7 +316,7 @@ void Game::updatePolice()
 	this->policeSpawnTimer += 0.5f;
 	if (this->policeSpawnTimer >= this->policeSpawnTimerMax)
 	{
-		this->polices.push_back(new Police(this->textures["POLICE"], rand() % 212 + 44, 100));
+		this->polices.push_back(new Police(this->textures["POLICE"], rand() % 212 + 44, 100)); //zeby policje nie tworzy³y sie na srodku
 		this->polices.push_back(new Police(this->textures["POLICE"], rand() % 199 + 454, 200));
 		this->policeSpawnTimer = 0.f;
 	}
@@ -329,6 +342,34 @@ void Game::updatePolice()
 
 			delete this->polices.at(counter);
 			this->polices.erase(this->polices.begin() + counter);
+		}
+		++counter; // mala optymalizacja wzgledem counter++
+	}
+}
+void Game::updateLine()
+{
+	//respienie
+	this->lineSpawnTimer += 0.5f;
+	if (this->lineSpawnTimer >= this->policeSpawnTimerMax)
+	{
+		this->lines.push_back(new Line(this->textures["LINE"], rand() % 212 + 44, 100)); //miejsce lini
+		this->lines.push_back(new Line(this->textures["LINE"], rand() % 199 + 454, 200));
+		this->lineSpawnTimer = 0.f;
+	}
+	//aktualizacja
+	unsigned counter = 0;
+	for (auto* line : this->lines)
+	{
+		line->update();
+
+		//usuwanie wrogow gdy wyjedzie z ekranu
+		if (line->getBounds().top > this->window->getSize().y)
+		{
+			//usuwanie wrogow
+			delete this->lines.at(counter);
+			this->lines.erase(this->lines.begin() + counter);
+
+			//std::cout << this->bullets.size() << "\n";
 		}
 		++counter; // mala optymalizacja wzgledem counter++
 	}
@@ -390,6 +431,7 @@ void Game::update()
 	this->updateBullets();
 	this->updateEnemies();
 	this->updatePolice();
+	this->updateLine();
 	this->updateCombat();
 	this->updateGUI();
 	this->updateWorld();
@@ -414,7 +456,10 @@ void Game::render()
 	this->renderWorld();
 	
 	//Rysowanie wszystkich rzeczy
-	this->player->render(*this->window);
+	for (auto* line : this->lines)
+	{
+		line->render(this->window);
+	}
 
 	for (auto* bullet : this->bullets)
 	{
@@ -430,7 +475,9 @@ void Game::render()
 	{
 		police->render(this->window);
 	}
+	
 
+	this->player->render(*this->window);
 
 	this->renderGUI();
 

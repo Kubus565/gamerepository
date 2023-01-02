@@ -7,6 +7,7 @@
 #include "Bullet.h"
 #include "Enemy.h"
 #include "Police.h"
+#include "Line.h"
 
 class Game
 {
@@ -53,6 +54,11 @@ private:
 	float policeSpawnTimerMax;
 	std::vector<Police*> polices;
 
+	//Linie
+	float lineSpawnTimer;
+	float lineSpawnTimerMax;
+	std::vector<Line*> lines;
+
 
 	
 	//funkcje prywatne
@@ -64,6 +70,7 @@ private:
 	void initPlayer();
 	void initEnemies(); 
 	void initPolice(); //do police
+	void initLine(); //do lini
 	
 	
 	
@@ -87,6 +94,7 @@ public:
 	void updateBullets();
 	void updateEnemies();
 	void updatePolice(); //do police
+	void updateLine(); 
 	void updateCombat();
 	void update();
 	void renderGUI();

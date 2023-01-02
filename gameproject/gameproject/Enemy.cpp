@@ -50,7 +50,7 @@ const int& Enemy::getDamage() const
 void Enemy::update()
 {
 	this->shape.move(0.f, this->speed); //predkosc opadania wrogow
-	//				   	  	^ jak zmienic stala w zmienna INFO
+	//			 	  	^ jak zmienic stala w zmienna INFO
 }
 
 void Enemy::render(sf::RenderTarget* target)

@@ -16,7 +16,7 @@ void Player::initVariables()
 void Player::initTexture()
 {
 	//ladowanie tekstury
-	if (!this->texture.loadFromFile("Textures/ship.png"))
+	if (!this->texture.loadFromFile("Textures/tank.png"))
 	{
 		std::cout << "ERROR::player::initTexture::Nie mozna zaladowac tekstury" << std::endl;
 	}
@@ -27,7 +27,7 @@ void Player::initSprite()
 	//³¹czenie tekstury se spritem
 	this->sprite.setTexture(this->texture);
 	//zmiana rozmiaru sprita, jezeli - to odbicie lustrzane
-	this->sprite.scale(0.1f, 0.1f);
+	//this->sprite.scale(0.1f, 0.1f);
 }
 
 Player::Player()
