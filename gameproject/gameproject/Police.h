@@ -5,6 +5,8 @@ class Police :
 {
 private:
     unsigned pointCount;
+    unsigned rotationPointCount;
+    //unsigned randomSection;
     sf::Sprite sprite;
     sf::Texture texture;
     int hp;
@@ -12,7 +14,9 @@ private:
     int damage;
     int points;
 
-    float speed;
+    float speedX;
+    float speedY;
+    float scrollingSpeed;
 
     void initVariables();
    
