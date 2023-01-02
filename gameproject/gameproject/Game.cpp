@@ -5,6 +5,7 @@ void Game::initWindow()
 {
 	this->window = new sf::RenderWindow(sf::VideoMode(800, 600), "Gra", sf::Style::Close | sf::Style::Titlebar);
 	this->window->setFramerateLimit(144);
+	//this->window->setFramerateLimit(60);
 	this->window->setVerticalSyncEnabled(false);
 }
 
@@ -133,7 +134,6 @@ const bool& Game::getHelp() const
 {
 	return this->isf1press;
 }
-
 //funkcje
 void Game::run()
 {
@@ -332,6 +332,7 @@ void Game::updatePolice()
 }
 void Game::updateCombat() // sprawdza w³asnie usuwanego przeciwnika i patrzy na nastepny pocisk
 {
+	//do wrogow
 	for (int i = 0; i < this->enemies.size(); i++)
 	{
 		bool enemy_deleted = false;
@@ -352,6 +353,28 @@ void Game::updateCombat() // sprawdza w³asnie usuwanego przeciwnika i patrzy na 
 			}
 		}
 	}
+	//do policji
+	for (int i = 0; i < this->polices.size(); i++)
+	{
+		bool police_deleted = false;
+		for (size_t k = 0; k < this->bullets.size() && police_deleted == false; k++) //sprawdzacz: je¿eli pocisk zabi³ kogos to omijamy ponizsza petle i przechodzimy do nastepnego wroga
+		{
+			if (this->polices[i]->getBounds().intersects(this->bullets[k]->getBounds()))
+			{
+				//punkty za zabojstwo
+				this->points += this->polices[i]->getPoints();
+
+				delete this->polices[i];
+				this->polices.erase(this->polices.begin() + i);
+
+				delete this->bullets[k];
+				this->bullets.erase(this->bullets.begin() + k);
+
+				police_deleted = true;
+			}
+		}
+	}
+
 }
 #pragma endregion
 void Game::update()

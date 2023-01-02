@@ -3,12 +3,12 @@
 void Police::initVariables()
 {
 	
-	this->pointCount = rand() % 8 + 3; //od 0 do 7 +3 tj. od 3 do 10
-	this->speed = static_cast<float>(this->pointCount / 4);
+	this->pointCount = rand() % 4 +1; //od 0 do 4 +1 
+	this->speed = static_cast<float>(this->pointCount);
 	this->hpMax = 10;
 	this->hp = this->hpMax;
 	this->damage = 1;
-	this->points = 5;
+	this->points = 100;
 }
 
 Police::Police(sf::Texture* texture, float pos_x, float pos_y)
