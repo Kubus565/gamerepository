@@ -352,8 +352,10 @@ void Game::updateLine()
 	this->lineSpawnTimer += 0.5f;
 	if (this->lineSpawnTimer >= this->policeSpawnTimerMax)
 	{
-		this->lines.push_back(new Line(this->textures["LINE"], rand() % 212 + 44, 100)); //miejsce lini
-		this->lines.push_back(new Line(this->textures["LINE"], rand() % 199 + 454, 200));
+		this->lines.push_back(new Line(this->textures["LINE"], 142 - 2, -25)); //miejsce lini 1 pas
+		this->lines.push_back(new Line(this->textures["LINE"], 251 - 2, -25));
+		this->lines.push_back(new Line(this->textures["LINE"], 550 - 2, -25)); //miejsce lini 2 pas
+		this->lines.push_back(new Line(this->textures["LINE"], 657 - 2, -25));
 		this->lineSpawnTimer = 0.f;
 	}
 	//aktualizacja
