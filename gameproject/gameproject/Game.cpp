@@ -4,8 +4,8 @@
 void Game::initWindow()
 {
 	this->window = new sf::RenderWindow(sf::VideoMode(800, 600), "Gra", sf::Style::Close | sf::Style::Titlebar);
-	this->window->setFramerateLimit(144);
-	//this->window->setFramerateLimit(60);
+	//this->window->setFramerateLimit(144);
+	this->window->setFramerateLimit(30);
 	this->window->setVerticalSyncEnabled(false);
 }
 
@@ -82,7 +82,7 @@ void Game::initEnemies()
 }
 void Game::initPolice()
 {
-	this->policeSpawnTimerMax = 50.f;
+	this->policeSpawnTimerMax = 10.f; //im mniej tym wiecej policji
 	this->policeSpawnTimer = this->policeSpawnTimerMax;
 }
 void Game::initLine()
@@ -126,10 +126,10 @@ Game::~Game()
 		delete i;
 	}
 	//usuwanie wrogow
-	for (auto* i : this->enemies)
+	/*for (auto* i : this->enemies)
 	{
 		delete i;
-	}
+	}*/
 	//usuwanie policji
 	for (auto* i : this->polices)
 	{
@@ -275,41 +275,41 @@ void Game::updateBullets()
 		++counter; // mala optymalizacja wzgledem counter++
 	}
 }
-void Game::updateEnemies()
-{
-	//respienie
-	this->spawnTimer += 0.5f;
-	if (this->spawnTimer >= this->spawnTimerMax)
-	{
-		this->enemies.push_back(new Enemy(rand() % this->window->getSize().x - 20.f,  -100));
-		this->spawnTimer = 0.f;
-	}
-	//aktualizacja
-	unsigned counter = 0;
-	for (auto* enemy : this->enemies)
-	{
-		enemy->update();
-
-		//usuwanie wrogow gdy wyjedzie z ekranu
-		if (enemy->getBounds().top > this->window->getSize().y)
-		{
-			//usuwanie wrogow
-			delete this->enemies.at(counter);
-			this->enemies.erase(this->enemies.begin() + counter);
-
-			//std::cout << this->bullets.size() << "\n";
-		}
-		//jezeli wrog dotknie gracza
-		else if (enemy->getBounds().intersects(this->player->getBounds())) 
-		{
-			this->player->loseHp(this->enemies.at(counter)->getDamage()); //end
-			
-			delete this->enemies.at(counter);
-			this->enemies.erase(this->enemies.begin() + counter);
-		}
-		++counter; // mala optymalizacja wzgledem counter++
-	}
-}
+//void Game::updateEnemies()
+//{
+//	//respienie
+//	this->spawnTimer += 0.5f;
+//	if (this->spawnTimer >= this->spawnTimerMax)
+//	{
+//		this->enemies.push_back(new Enemy(rand() % this->window->getSize().x - 20.f,  -100));
+//		this->spawnTimer = 0.f;
+//	}
+//	//aktualizacja
+//	unsigned counter = 0;
+//	for (auto* enemy : this->enemies)
+//	{
+//		enemy->update();
+//
+//		//usuwanie wrogow gdy wyjedzie z ekranu
+//		if (enemy->getBounds().top > this->window->getSize().y)
+//		{
+//			//usuwanie wrogow
+//			delete this->enemies.at(counter);
+//			this->enemies.erase(this->enemies.begin() + counter);
+//
+//			//std::cout << this->bullets.size() << "\n";
+//		}
+//		//jezeli wrog dotknie gracza
+//		else if (enemy->getBounds().intersects(this->player->getBounds())) 
+//		{
+//			this->player->loseHp(this->enemies.at(counter)->getDamage()); //end
+//			
+//			delete this->enemies.at(counter);
+//			this->enemies.erase(this->enemies.begin() + counter);
+//		}
+//		++counter; // mala optymalizacja wzgledem counter++
+//	}
+//}
 void Game::updatePolice()
 {
 	//respienie
@@ -321,11 +321,26 @@ void Game::updatePolice()
 		this->policeSpawnTimer = 0.f;
 	}
 	//aktualizacja
+	
+	for (int i = 0; i < this->polices.size(); i++)
+	{
+		bool police_stopped = false;
+		for (size_t k = 0; k < this->polices.size() && police_stopped == false; k++) //sprawdzacz: je¿eli pocisk zabi³ kogos to omijamy ponizsza petle i przechodzimy do nastepnego wroga
+		{
+			if (this->polices[i]->getBounds().intersects(this->polices[k]->getBounds()))
+			{
+				this->polices[i]->updateStop();
+				this->polices[k]->updateStop();
+				police_stopped = true;
+			}
+		}
+		this->polices[i]->update();
+		std::cout << " " << this->polices.size();
+	}
+	
 	unsigned counter = 0;
 	for (auto* police : this->polices)
 	{
-		police->update();
-
 		//usuwanie wrogow gdy wyjedzie z ekranu
 		if (police->getBounds().top > this->window->getSize().y)
 		{
@@ -343,6 +358,7 @@ void Game::updatePolice()
 			delete this->polices.at(counter);
 			this->polices.erase(this->polices.begin() + counter);
 		}
+		
 		++counter; // mala optymalizacja wzgledem counter++
 	}
 }
@@ -431,7 +447,7 @@ void Game::update()
 	this->player->update();
 	this->updateCollision();
 	this->updateBullets();
-	this->updateEnemies();
+	//this->updateEnemies();
 	this->updatePolice();
 	this->updateLine();
 	this->updateCombat();
@@ -468,10 +484,10 @@ void Game::render()
 		bullet->render(this->window);
 	}
 
-	for (auto* enemy : this->enemies)
+	/*for (auto* enemy : this->enemies)
 	{
 		enemy->render(this->window);
-	}
+	}*/
 	
 	for (auto* police : this->polices)
 	{

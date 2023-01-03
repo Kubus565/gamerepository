@@ -92,7 +92,7 @@ public:
 	void updateWorld();
 	void updateCollision();
 	void updateBullets();
-	void updateEnemies();
+	//void updateEnemies();
 	void updatePolice(); //do police
 	void updateLine(); 
 	void updateCombat();

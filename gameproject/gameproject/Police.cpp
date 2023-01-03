@@ -24,28 +24,23 @@ Police::Police(sf::Texture* texture, float pos_x, float pos_y)
 	
 	case 1:
 		this->sprite.setRotation(90);
-		this->speedX = -(rand() % 3);
+		this->speedX = -(rand() % 2 + 1.f );
 		this->speedY = this->scrollingSpeed;
-		std::cout << direction;
 		break;
 	case 2:
 		this->sprite.setRotation(270);
-		this->speedX = rand() % 3;
+		this->speedX = rand() % 3 + 1.f;
 		this->speedY = this->scrollingSpeed;
-		std::cout << direction;
 		break;
 	case 3:
-		//this->sprite.setRotation(180);
 		this->speedX = 0;
-		this->speedY = this->scrollingSpeed + (rand() % 3);
+		this->speedY = this->scrollingSpeed + (rand() % 3 + 1.f);
 		break;
 	case 4:
-		//this->sprite.setRotation(180);
 		this->speedX = 0;
-		this->speedY = this->scrollingSpeed + (rand() % 3);
+		this->speedY = this->scrollingSpeed + (rand() % 2 + 1.f);
 		break;
 	case 5:
-		//this->sprite.setRotation(180);
 		this->speedX = 0;
 		this->speedY = 3/2; //czasami wywala b³¹d
 		break;
@@ -80,10 +75,19 @@ void Police::update()
 {
 	//ruch
 	//this->sprite.move(this->movementSpeed * this->direction);
+		
 	this->sprite.move(this->speedX,  this->speedY); //predkosc opadania
+}
+
+void Police::updateStop()
+{
+	this->sprite.move(0.f, this->scrollingSpeed);
+	//std::cout << "S";
 }
 
 void Police::render(sf::RenderTarget* target)
 {
 	target->draw(this->sprite);
+	//std::cout << "X";
+
 }
