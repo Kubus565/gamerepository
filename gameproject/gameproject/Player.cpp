@@ -30,12 +30,13 @@ void Player::initSprite()
 	//this->sprite.scale(0.1f, 0.1f);
 }
 
-Player::Player()
+Player::Player(const float x, const float y)
 {
 	this->initVariables();
 	
 	this->initTexture();
 	this->initSprite();
+	this->sprite.setPosition(x, y);
 }
 
 Player::~Player()

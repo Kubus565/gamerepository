@@ -2,7 +2,7 @@
 
 void Line::initVariables()
 {
-	this->scrollingSpeed = 1;
+	this->scrollingSpeed = 3.f;//1
 }
 
 Line::Line(sf::Texture* texture, float pos_x, float pos_y)

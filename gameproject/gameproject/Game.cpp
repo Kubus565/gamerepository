@@ -5,7 +5,7 @@ void Game::initWindow()
 {
 	this->window = new sf::RenderWindow(sf::VideoMode(800, 600), "Gra", sf::Style::Close | sf::Style::Titlebar);
 	//this->window->setFramerateLimit(144);
-	this->window->setFramerateLimit(30);
+	this->window->setFramerateLimit(60);
 	this->window->setVerticalSyncEnabled(false);
 }
 
@@ -72,7 +72,7 @@ void Game::initSystems()
 
 void Game::initPlayer()
 {
-	this->player = new Player();
+	this->player = new Player(window->getSize().x/2 - 52.f, window->getSize().y / 2 - 71.f);
 }
 
 void Game::initEnemies()
@@ -82,12 +82,12 @@ void Game::initEnemies()
 }
 void Game::initPolice()
 {
-	this->policeSpawnTimerMax = 10.f; //im mniej tym wiecej policji
+	this->policeSpawnTimerMax = 50.f; //im mniej tym wiecej policji
 	this->policeSpawnTimer = this->policeSpawnTimerMax;
 }
 void Game::initLine()
 {
-	this->lineSpawnTimerMax = 2.f;
+	this->lineSpawnTimerMax = 50.f;
 	this->lineSpawnTimer = this->lineSpawnTimerMax;
 }
 #pragma endregion
@@ -192,7 +192,7 @@ void Game::updateInput()
 	{
 		this->bullets.push_back(new Bullet(this->textures["BULLET"], 
 		this->player->getPos().x + this->player->getBounds().width/2.f - 5.0f, 
-		this->player->getPos().y, 0.f, -1.f, 14.f)); //0.f, -1.f, 5.f kierunek kierunek predkosc pocisku
+		this->player->getPos().y, 0.f, -1.f, 34.f)); //0.f, -1.f, 5.f kierunek kierunek predkosc pocisku
 	}
 	//pomoc
 	//bool isf1press = false;
@@ -321,7 +321,7 @@ void Game::updatePolice()
 		this->policeSpawnTimer = 0.f;
 	}
 	//aktualizacja
-	
+	//jezeli policja st³ucze inny radiowóz to ma sie przykleiæ, nie przenikaæ
 	for (int i = 0; i < this->polices.size(); i++)
 	{
 		bool police_stopped = false;
@@ -341,16 +341,16 @@ void Game::updatePolice()
 	unsigned counter = 0;
 	for (auto* police : this->polices)
 	{
-		//usuwanie wrogow gdy wyjedzie z ekranu
+		//usuwanie  gdy wyjedzie z ekranu
 		if (police->getBounds().top > this->window->getSize().y)
 		{
-			//usuwanie wrogow
+			//usuwanie policji
 			delete this->polices.at(counter);
 			this->polices.erase(this->polices.begin() + counter);
 
 			//std::cout << this->bullets.size() << "\n";
 		}
-		//jezeli wrog dotknie gracza
+		//jezeli policja dotknie gracza
 		else if (police->getBounds().intersects(this->player->getBounds()))
 		{
 			this->player->loseHp(this->polices.at(counter)->getDamage()); //end
@@ -365,7 +365,7 @@ void Game::updatePolice()
 void Game::updateLine()
 {
 	//respienie
-	this->lineSpawnTimer += 0.5f;
+	this->lineSpawnTimer += 1.2f;// 0.5f odleglosc pomiedzy liniami, im mniej tym wieksza
 	if (this->lineSpawnTimer >= this->policeSpawnTimerMax)
 	{
 		this->lines.push_back(new Line(this->textures["LINE"], 142 - 2, -25)); //miejsce lini 1 pas
