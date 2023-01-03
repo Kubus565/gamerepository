@@ -316,8 +316,8 @@ void Game::updatePolice()
 	this->policeSpawnTimer += 0.5f;
 	if (this->policeSpawnTimer >= this->policeSpawnTimerMax)
 	{
-		this->polices.push_back(new Police(this->textures["POLICE"], rand() % 212 + 44, 100)); //zeby policje nie tworzy³y sie na srodku
-		this->polices.push_back(new Police(this->textures["POLICE"], rand() % 199 + 454, 200));
+		this->polices.push_back(new Police(this->textures["POLICE"], rand() % 212 + 44, -100)); //zeby policje nie tworzy³y sie na srodku
+		this->polices.push_back(new Police(this->textures["POLICE"], rand() % 199 + 454, -200));
 		this->policeSpawnTimer = 0.f;
 	}
 	//aktualizacja
@@ -364,10 +364,10 @@ void Game::updateLine()
 	{
 		line->update();
 
-		//usuwanie wrogow gdy wyjedzie z ekranu
+		//usuwanie lini gdy wyjedzie z ekranu
 		if (line->getBounds().top > this->window->getSize().y)
 		{
-			//usuwanie wrogow
+			//usuwanie lini
 			delete this->lines.at(counter);
 			this->lines.erase(this->lines.begin() + counter);
 
