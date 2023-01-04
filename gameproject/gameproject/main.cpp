@@ -4,11 +4,13 @@
 
 #include <time.h>
 #include "Game.h"
+#include "Menu.h"
 
 
 int main()
 {
 	srand(static_cast<unsigned int>(time(0)));
+	Menu menu;
 	Game game;
 	game.run();
 

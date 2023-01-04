@@ -335,7 +335,7 @@ void Game::updatePolice()
 			}
 		}
 		this->polices[i]->update();
-		std::cout << " " << this->polices.size();
+		//std::cout << " " << this->polices.size();
 	}
 	
 	unsigned counter = 0;
