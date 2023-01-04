@@ -368,10 +368,12 @@ void Game::updateLine()
 	this->lineSpawnTimer += 1.2f;// 0.5f odleglosc pomiedzy liniami, im mniej tym wieksza
 	if (this->lineSpawnTimer >= this->policeSpawnTimerMax)
 	{
-		this->lines.push_back(new Line(this->textures["LINE"], 142 - 2, -25)); //miejsce lini 1 pas
-		this->lines.push_back(new Line(this->textures["LINE"], 251 - 2, -25));
-		this->lines.push_back(new Line(this->textures["LINE"], 550 - 2, -25)); //miejsce lini 2 pas
-		this->lines.push_back(new Line(this->textures["LINE"], 657 - 2, -25));
+		
+		this->lines.push_back(new Line( 142 - 2, -25)); //miejsce lini 1 pas
+		this->lines.push_back(new Line( 251 - 2, -25));
+		this->lines.push_back(new Line( 550 - 2, -25)); //miejsce lini 2 pas
+		this->lines.push_back(new Line( 657 - 2, -25));
+
 		this->lineSpawnTimer = 0.f;
 	}
 	//aktualizacja
