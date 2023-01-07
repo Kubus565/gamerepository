@@ -1,14 +1,13 @@
 #include "Game.h"
 #pragma region Game_inicjalizacja
 //Funkcje prywatne
-void Game::initWindow()
-{
-	this->window = new sf::RenderWindow(sf::VideoMode(800, 600), "Gra", sf::Style::Close | sf::Style::Titlebar);
-	//this->window->setFramerateLimit(144);
-	this->window->setFramerateLimit(60);
-	this->window->setVerticalSyncEnabled(false);
-}
-
+//void Game::initWindow()
+//{
+//	//this->window = new sf::RenderWindow(sf::VideoMode(800, 600), "Gra", sf::Style::Close | sf::Style::Titlebar);
+//	////this->window->setFramerateLimit(144);
+//	//this->window->setFramerateLimit(60);
+//	//this->window->setVerticalSyncEnabled(false);
+//}
 void Game::initTextures()
 {
 	this->textures["BULLET"] = new sf::Texture();
@@ -18,7 +17,6 @@ void Game::initTextures()
 	this->textures["LINE"] = new sf::Texture();
 	this->textures["LINE"]->loadFromFile("Textures/line.png");
 }
-
 void Game::initGUI()
 {
 	//ladowanie czcionek
@@ -57,24 +55,20 @@ void Game::initGUI()
 	this->playerHpBarBack.setFillColor(sf::Color(25, 25, 25, 200));
 
 }
-
 void Game::initWorld()
 {
 	if (!this->worldBackgroundTex.loadFromFile("textures/background1.png"))
 		std::cout << "ERROR::GAMECPP::Blad ladowania tla" << "\n";
 	this->worldBachground.setTexture(this->worldBackgroundTex);
 }
-
 void Game::initSystems()
 {
 	this->points = 0;
 }
-
 void Game::initPlayer()
 {
-	this->player = new Player(window->getSize().x/2 - 52.f, window->getSize().y / 2 - 71.f);
+	this->player = new Player(window->getSize().x/2 - 52.f, window->getSize().y / 2 - 71.f, hp);
 }
-
 void Game::initEnemies()
 {
 	this->spawnTimerMax = 50.f;
@@ -90,12 +84,22 @@ void Game::initLine()
 	this->lineSpawnTimerMax = 50.f;
 	this->lineSpawnTimer = this->lineSpawnTimerMax;
 }
+void Game::initHp(int hp_)
+{
+	this->hp = hp_;
+}
 #pragma endregion
 // koniec initów %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Game::Game()
+Game::Game(int level_, int points_, int health_)
 {
-	this->initWindow();
+	MainWindow mainWindow("Graa");
+	this->window = mainWindow.getWindow();
+	//this->speed = s1.speed;
+	this->points = points_;
+	this->initHp(health_);
+	
+	//this->initWindow();
 	this->initTextures();
 	this->initGUI();
 	this->initWorld();
@@ -104,9 +108,7 @@ Game::Game()
 	this->initEnemies();
 	this->initPolice();
 	this->initLine();
-
 	this->isf1press = false;
-
 }
 
 Game::~Game()
@@ -143,14 +145,19 @@ Game::~Game()
 
 }
 
+//funkcje
 const bool& Game::getHelp() const
 {
 	return this->isf1press;
 }
-//funkcje
+const int& Game::getStartHp() const
+{
+	return this->hp;
+}
 void Game::run()
 {
-	while (this->window->isOpen() )
+	//while (this->window->isOpen())
+		while (this->points < 3000 )
 	{
 		this->updatePollEvent();	//over
 		this->keyListener(); //Mateusz od komentuje
@@ -368,12 +375,10 @@ void Game::updateLine()
 	this->lineSpawnTimer += 1.2f;// 0.5f odleglosc pomiedzy liniami, im mniej tym wieksza
 	if (this->lineSpawnTimer >= this->policeSpawnTimerMax)
 	{
-		
 		this->lines.push_back(new Line( 142 - 2, -25)); //miejsce lini 1 pas
 		this->lines.push_back(new Line( 251 - 2, -25));
 		this->lines.push_back(new Line( 550 - 2, -25)); //miejsce lini 2 pas
 		this->lines.push_back(new Line( 657 - 2, -25));
-
 		this->lineSpawnTimer = 0.f;
 	}
 	//aktualizacja
@@ -381,14 +386,12 @@ void Game::updateLine()
 	for (auto* line : this->lines)
 	{
 		line->update();
-
 		//usuwanie lini gdy wyjedzie z ekranu
 		if (line->getBounds().top > this->window->getSize().y)
 		{
 			//usuwanie lini
 			delete this->lines.at(counter);
 			this->lines.erase(this->lines.begin() + counter);
-
 			//std::cout << this->bullets.size() << "\n";
 		}
 		++counter; // mala optymalizacja wzgledem counter++
@@ -498,7 +501,6 @@ void Game::render()
 	
 
 	this->player->render(*this->window);
-
 	this->renderGUI();
 
 	//Game over //over

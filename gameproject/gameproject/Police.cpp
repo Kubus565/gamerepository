@@ -5,6 +5,7 @@ void Police::initVariables()
 	
 	this->direction = rand() % 5 + 1; //wybor kierunku
 	this->scrollingSpeed = 1;
+
 	this->hpMax = 10;
 	this->hp = this->hpMax;
 	this->damage = 1;

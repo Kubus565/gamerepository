@@ -8,6 +8,7 @@
 #include "Enemy.h"
 #include "Police.h"
 #include "Line.h"
+#include "MainWindow.h"
 
 class Game
 {
@@ -30,12 +31,14 @@ private:
 
 	bool isf1press;
 
+	unsigned speed = 1;
 	//swiat
 	sf::Texture worldBackgroundTex;
 	sf::Sprite worldBachground;
 
 	//system
 	unsigned points;
+	int hp;
 
 	//gracz
 	Player* player;
@@ -62,7 +65,8 @@ private:
 
 	
 	//funkcje prywatne
-	void initWindow();		//przypisanie wartosci poczatkowych
+	//void initWindow();		//przypisanie wartosci poczatkowych
+	
 	void initTextures();
 	void initGUI();
 	void initWorld();
@@ -71,16 +75,19 @@ private:
 	void initEnemies(); 
 	void initPolice(); //do police
 	void initLine(); //do lini
+	void initHp(int hp);
 	
 	
 	
 
 
 public:
-	Game();
+	Game(int level_, int points_, int hp);
+	
 	~Game();
 
 	const bool& getHelp() const;
+	const int& getStartHp() const;
 
 	void run();
 	

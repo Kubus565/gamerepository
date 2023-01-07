@@ -1,13 +1,13 @@
 #include "Menu.h"
 #include <iostream>
 
-void Menu::initWindow()
-{
-	this->window = new sf::RenderWindow(sf::VideoMode(800, 600), "MENU", sf::Style::Close | sf::Style::Titlebar);
-	//this->window->setFramerateLimit(144);
-	this->window->setFramerateLimit(60);
-	this->window->setVerticalSyncEnabled(false);
-}
+////void Menu::initWindow()
+//{
+//	this->window = new sf::RenderWindow(sf::VideoMode(800, 600), "MENU", sf::Style::Close | sf::Style::Titlebar);
+//	//this->window->setFramerateLimit(144);
+//	this->window->setFramerateLimit(60);
+//	this->window->setVerticalSyncEnabled(false);
+//}
 
 void Menu::initGUI()
 {
@@ -18,9 +18,18 @@ void Menu::initGUI()
 	this->menuText.setPosition(300.f, 300.f); // napis na srodku
 
 }
+void Menu::initWorld()
+{
+	if (!this->worldBackgroundTex.loadFromFile("textures/background1.png"))
+		std::cout << "ERROR::GAMECPP::Blad ladowania tla" << "\n";
+	this->worldBachground.setTexture(this->worldBackgroundTex);
+}
 Menu::Menu()
 {
-	this->initWindow();
+	MainWindow menu("menju");
+	this->window = menu.getWindow();
+	int level;
+	//this->initWindow();
 	this->initGUI();
 }
 
@@ -29,6 +38,7 @@ Menu::~Menu()
 	delete this->window;
 }
 
+//tu int
 void Menu::run()
 {
 	while (this->window->isOpen())
@@ -40,6 +50,7 @@ void Menu::run()
 
 		this->render();
 	}
+	//return this->level
 }
 
 void Menu::updatePollEvent()
@@ -90,6 +101,8 @@ void Menu::render()
 {
 	this->window->clear();
 	this->renderGUI();
+	this->window->draw(this->menuText);
+	this->window->draw(this->worldBachground);
 	this->window->display();
 }
 

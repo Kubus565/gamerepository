@@ -26,7 +26,7 @@ private:
 	void initSprite();
 
 public:
-	Player(const float x, const float y);
+	Player(const float x, const float y, int hpPlayer);
 	~Player();
 
 	//dostep

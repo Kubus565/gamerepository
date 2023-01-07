@@ -12,10 +12,14 @@ private:
 	sf::Text menuText;
 	sf::Font font;
 
+	//swiat
+	sf::Texture worldBackgroundTex;
+	sf::Sprite worldBachground;
+
 		//funkcje prywatne
-		void initWindow();		//przypisanie wartosci poczatkowych
+		//void initWindow();		//przypisanie wartosci poczatkowych
 		void initGUI();
-		
+		void initWorld();
 public:
 		 Menu();
 		~Menu();

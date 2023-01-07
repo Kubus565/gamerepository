@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Game.h"
 
 
 void Player::initVariables()
@@ -10,7 +11,9 @@ void Player::initVariables()
 	this->attackCooldown = this->attackCooldownMax;
 
 	this->hpMax = 100;  //hp
-	this->hp = this->hpMax;
+	//this->hpMax = this->getHp();  //hp
+	//this->hp = this->hpMax;
+	//this->hp = ;
 }
 
 void Player::initTexture()
@@ -30,10 +33,10 @@ void Player::initSprite()
 	//this->sprite.scale(0.1f, 0.1f);
 }
 
-Player::Player(const float x, const float y)
+Player::Player(const float x, const float y, int hpPlayer)
 {
 	this->initVariables();
-	
+	this->hp = hpPlayer;
 	this->initTexture();
 	this->initSprite();
 	this->sprite.setPosition(x, y);
