@@ -25,7 +25,6 @@ private:
 	//interface
 	sf::Font font;
 	sf::Text pointText;
-
 	sf::Text gameOverText;//over
 	sf::Text helpText;
 

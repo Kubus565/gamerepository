@@ -22,6 +22,7 @@ int main()
 	config  c1;
 
 	Menu menu;
+	menu.run();
 	//int config = menu.run();
 	
 	Game game(c1.level, c1.points, c1.hp);

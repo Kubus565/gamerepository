@@ -9,8 +9,8 @@ class Menu //: public Game
 private:
 	sf::RenderWindow* window;
 
-	sf::Text menuText;
 	sf::Font font;
+	sf::Text menuText;
 
 	//swiat
 	sf::Texture worldBackgroundTex;
@@ -34,6 +34,7 @@ public:
 
 		void update();
 		void renderGUI();
+		void renderWorld();
 		void render();
 	
 };

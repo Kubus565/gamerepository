@@ -11,6 +11,10 @@
 
 void Menu::initGUI()
 {
+	//ladowanie czcionek
+	if (!this->font.loadFromFile("Fonts/PixellettersFull.ttf"))
+		std::cout << "ERROR::GAME::Nie udalo sie zaladowac czcionki" << " \n";
+
 	this->menuText.setFont(this->font);
 	this->menuText.setCharacterSize(100); //wielkosc czcionki
 	this->menuText.setFillColor(sf::Color::Red); //kolor czcionki
@@ -28,9 +32,9 @@ Menu::Menu()
 {
 	MainWindow menu("menju");
 	this->window = menu.getWindow();
-	int level;
-	//this->initWindow();
+	
 	this->initGUI();
+	this->initWorld();
 }
 
 Menu::~Menu()
@@ -55,13 +59,13 @@ void Menu::run()
 
 void Menu::updatePollEvent()
 {
-	sf::Event e;
-	while (this->window->pollEvent(e))
+	sf::Event e2;
+	while (this->window->pollEvent(e2))
 	{
 		//mozna to w jednym ifie TODO
-		if (e.Event::type == sf::Event::Closed)
+		if (e2.Event::type == sf::Event::Closed)
 			this->window->close();
-		if (e.Event::KeyPressed && e.Event::key.code == sf::Keyboard::Escape)
+		if (e2.Event::KeyPressed && e2.Event::key.code == sf::Keyboard::Escape)
 			this->window->close();
 	}
 }
@@ -81,7 +85,7 @@ void Menu::updateGUI()
 {
 	std::stringstream ss; //liczba punktow
 	ss << "Punkty: " << 69;
-	this->menuText.setString(ss.str());
+	//this->menuText.setString(ss.str());
 
 }
 
@@ -89,6 +93,7 @@ void Menu::update()
 {
 	this->updateInput();
 	this->updateGUI();
+	
 }
 
 void Menu::renderGUI()
@@ -96,13 +101,21 @@ void Menu::renderGUI()
 	this->window->draw(this->menuText);
 	
 }
+void Menu::renderWorld()
+{
+	this->window->draw(this->worldBachground);
+
+}
 
 void Menu::render()
 {
 	this->window->clear();
+	
+	this->renderWorld();
 	this->renderGUI();
 	this->window->draw(this->menuText);
-	this->window->draw(this->worldBachground);
+	//this->window->draw(this->worldBachground);
+	
 	this->window->display();
 }
 

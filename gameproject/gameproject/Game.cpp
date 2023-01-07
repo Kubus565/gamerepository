@@ -457,7 +457,7 @@ void Game::update()
 	this->updateLine();
 	this->updateCombat();
 	this->updateGUI();
-	this->updateWorld();
+	//this->updateWorld();
 }
 
 #pragma region Rendery
