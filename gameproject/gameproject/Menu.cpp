@@ -9,7 +9,7 @@
 //	this->window->setVerticalSyncEnabled(false);
 //}
 
-void Menu::initGUI()
+void Menu::initVision()
 {
 	//ladowanie czcionek
 	if (!this->font.loadFromFile("Fonts/PixellettersFull.ttf"))
@@ -17,24 +17,24 @@ void Menu::initGUI()
 
 	this->menuText.setFont(this->font);
 	this->menuText.setCharacterSize(100); //wielkosc czcionki
-	this->menuText.setFillColor(sf::Color::Red); //kolor czcionki
-	this->menuText.setString(" MENU MENU MENU MENU");
-	this->menuText.setPosition(300.f, 300.f); // napis na srodku
+	this->menuText.setFillColor(sf::Color::Blue); //kolor czcionki
+	this->menuText.setOutlineThickness(2.f);
+	this->menuText.setOutlineColor(sf::Color::Red); 
+	this->menuText.setString("Police grist!");
+	this->menuText.setPosition(window->getSize().x/2, window->getSize().y / 2); // napis na srodku
 
-}
-void Menu::initWorld()
-{
-	if (!this->worldBackgroundTex.loadFromFile("textures/background1.png"))
+	if (!this->worldBackgroundTex.loadFromFile("textures/background2.png"))
 		std::cout << "ERROR::GAMECPP::Blad ladowania tla" << "\n";
 	this->worldBachground.setTexture(this->worldBackgroundTex);
+	//this->worldBachground.setColor(sf::Color(106, 166, 62));
+	
 }
 Menu::Menu()
 {
 	MainWindow menu("menju");
 	this->window = menu.getWindow();
 	
-	this->initGUI();
-	this->initWorld();
+	this->initVision();
 }
 
 Menu::~Menu()
@@ -81,7 +81,7 @@ void Menu::updateInput()
 	
 }
 
-void Menu::updateGUI()
+void Menu::updateVision()
 {
 	std::stringstream ss; //liczba punktow
 	ss << "Punkty: " << 69;
@@ -92,27 +92,23 @@ void Menu::updateGUI()
 void Menu::update()
 {
 	this->updateInput();
-	this->updateGUI();
+	this->updateVision();
 	
 }
 
-void Menu::renderGUI()
+void Menu::renderVision()
 {
 	this->window->draw(this->menuText);
+	this->window->draw(this->worldBachground);
 	
 }
-void Menu::renderWorld()
-{
-	this->window->draw(this->worldBachground);
 
-}
 
 void Menu::render()
 {
 	this->window->clear();
 	
-	this->renderWorld();
-	this->renderGUI();
+	this->renderVision();
 	this->window->draw(this->menuText);
 	//this->window->draw(this->worldBachground);
 	

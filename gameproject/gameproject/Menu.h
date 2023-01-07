@@ -17,9 +17,7 @@ private:
 	sf::Sprite worldBachground;
 
 		//funkcje prywatne
-		//void initWindow();		//przypisanie wartosci poczatkowych
-		void initGUI();
-		void initWorld();
+		void initVision();
 public:
 		 Menu();
 		~Menu();
@@ -30,11 +28,10 @@ public:
 		
 		void updatePollEvent();
 		void updateInput();
-		void updateGUI();
+		void updateVision();
 
 		void update();
-		void renderGUI();
-		void renderWorld();
+		void renderVision();
 		void render();
 	
 };
