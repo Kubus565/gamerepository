@@ -28,7 +28,13 @@ void Game::initGUI()
 	this->pointText.setFont(this->font);
 	this->pointText.setCharacterSize(30); //wielkosc czcionki
 	this->pointText.setFillColor(sf::Color::White); //kolor czcionki
-	this->pointText.setString("test");
+	
+	// f1
+	this->f1ToHelpText.setPosition(600.f, 585.f);
+	this->f1ToHelpText.setFont(this->font);
+	this->f1ToHelpText.setCharacterSize(30); //wielkosc czcionki
+	this->f1ToHelpText.setFillColor(sf::Color::White); //kolor czcionki
+	this->f1ToHelpText.setString("press f1 to help");
 					
 				//over
 	this->gameOverText.setFont(this->font);
@@ -40,11 +46,13 @@ void Game::initGUI()
 		this->window->getSize().y / 2.f - this->gameOverText.getGlobalBounds().height / 2.f); // napis na srodku
 
 	//strona help
-	this->helpText.setPosition(70.f, 25.f);
+	this->helpText.setPosition(70.f, 30.f);
 	this->helpText.setFont(this->font);
 	this->helpText.setCharacterSize(40); //wielkosc czcionki
-	this->helpText.setFillColor(sf::Color::Green); //kolor czcionki
-	this->helpText.setString("klawisz F1 \n klawisz < ^ > ");
+	this->helpText.setOutlineThickness(1.f);
+	this->helpText.setOutlineColor(sf::Color::White);
+	this->helpText.setFillColor(sf::Color::Blue); //kolor czcionki
+	this->helpText.setString("Help F1 \nMove up W\nMove down S\nMove left A\nMove right D\nShoot! SPACE\nSave level L\n");
 																							  
 																							  //player GUI, HP
 	this->playerHpBar.setSize(sf::Vector2f(300.f, 25.f)); //pasek ¿ycia //hp
@@ -55,7 +63,7 @@ void Game::initGUI()
 	this->playerHpBarBack.setFillColor(sf::Color(25, 25, 25, 200));
 
 }
-void Game::initWorld()
+void Game::initBackground()
 {
 	if (!this->worldBackgroundTex.loadFromFile("textures/background1.png"))
 		std::cout << "ERROR::GAMECPP::Blad ladowania tla" << "\n";
@@ -102,7 +110,7 @@ Game::Game(int level_, int points_, int health_)
 	//this->initWindow();
 	this->initTextures();
 	this->initGUI();
-	this->initWorld();
+	this->initBackground();
 	this->initSystems(); //punkty
 	this->initPlayer();
 	this->initEnemies();
@@ -233,10 +241,7 @@ void Game::updateGUI()
 	this->playerHpBar.setSize(sf::Vector2f(300.f * hpPercent, this->playerHpBar.getSize().y));
 
 }
-void Game::updateWorld()
-{
 
-}
 void Game::updateCollision() //zeby pojazd nie wychodzi³ poza ekran
 {
 	//lewa granica swiata
@@ -464,10 +469,11 @@ void Game::update()
 void Game::renderGUI()
 {
 	this->window->draw(this->pointText);
+	this->window->draw(this->f1ToHelpText);
 	this->window->draw(this->playerHpBarBack); //hp
 	this->window->draw(this->playerHpBar);
 }
-void Game::renderWorld()
+void Game::renderBackground()
 {
 	this->window->draw(this->worldBachground);
 }
@@ -476,7 +482,7 @@ void Game::render()
 	this->window->clear();
 
 	//rysowanie tla
-	this->renderWorld();
+	this->renderBackground();
 	
 	//Rysowanie wszystkich rzeczy
 	for (auto* line : this->lines)

@@ -1,37 +1,48 @@
 #include "Menu.h"
 #include <iostream>
-
-////void Menu::initWindow()
-//{
-//	this->window = new sf::RenderWindow(sf::VideoMode(800, 600), "MENU", sf::Style::Close | sf::Style::Titlebar);
-//	//this->window->setFramerateLimit(144);
-//	this->window->setFramerateLimit(60);
-//	this->window->setVerticalSyncEnabled(false);
-//}
-
 void Menu::initVision()
 {
 	//ladowanie czcionek
 	if (!this->font.loadFromFile("Fonts/PixellettersFull.ttf"))
 		std::cout << "ERROR::GAME::Nie udalo sie zaladowac czcionki" << " \n";
 
-	this->menuText.setFont(this->font);
-	this->menuText.setCharacterSize(100); //wielkosc czcionki
-	this->menuText.setFillColor(sf::Color::Blue); //kolor czcionki
-	this->menuText.setOutlineThickness(2.f);
-	this->menuText.setOutlineColor(sf::Color::Red); 
-	this->menuText.setString("Police grist!");
-	this->menuText.setPosition(window->getSize().x/2, window->getSize().y / 2); // napis na srodku
-
 	if (!this->worldBackgroundTex.loadFromFile("textures/background2.png"))
 		std::cout << "ERROR::GAMECPP::Blad ladowania tla" << "\n";
 	this->worldBachground.setTexture(this->worldBackgroundTex);
 	//this->worldBachground.setColor(sf::Color(106, 166, 62));
+
+	this->menuText[0].setFont(this->font); 
+	this->menuText[0].setCharacterSize(100); //wielkosc czcionki
+	this->menuText[0].setFillColor(sf::Color::Blue); //kolor czcionki
+	this->menuText[0].setOutlineThickness(2.f); // obramowania
+	this->menuText[0].setOutlineColor(sf::Color::White); 
+	this->menuText[0].setString("Police pulp!");
+	this->menuText[0].setPosition(80.f, 40.f); 
+
+	this->menuText[1].setFont(this->font);
+	this->menuText[1].setCharacterSize(50); //wielkosc czcionki
+	this->menuText[1].setFillColor(sf::Color::Blue); //kolor czcionki
+	this->menuText[1].setString("1 New Game");
+	this->menuText[1].setPosition(80.f, 250.f);
+
+	this->menuText[2].setFont(this->font);
+	this->menuText[2].setCharacterSize(50); //wielkosc czcionki
+	this->menuText[2].setFillColor(sf::Color::Blue); //kolor czcionki
+	this->menuText[2].setString("2 Load last game");
+	this->menuText[2].setPosition(80.f, 330.f);
+
+	this->menuText[3].setFont(this->font);
+	this->menuText[3].setCharacterSize(50); //wielkosc czcionki
+	this->menuText[3].setFillColor(sf::Color::Blue); //kolor czcionki
+	this->menuText[3].setString("3 instruction and control");
+	this->menuText[3].setPosition(80.f, 410.f);
+
+	
 	
 }
 Menu::Menu()
 {
-	MainWindow menu("menju");
+	MainWindow menu("Menu");
 	this->window = menu.getWindow();
 	
 	this->initVision();
@@ -95,22 +106,16 @@ void Menu::update()
 	this->updateVision();
 	
 }
-
-void Menu::renderVision()
-{
-	this->window->draw(this->menuText);
-	this->window->draw(this->worldBachground);
-	
-}
-
-
 void Menu::render()
 {
 	this->window->clear();
 	
-	this->renderVision();
-	this->window->draw(this->menuText);
-	//this->window->draw(this->worldBachground);
+	//this->renderVision();
+	this->window->draw(this->worldBachground);
+	this->window->draw(this->menuText[0]);
+	this->window->draw(this->menuText[1]);
+	this->window->draw(this->menuText[2]);
+	this->window->draw(this->menuText[3]);
 	
 	this->window->display();
 }

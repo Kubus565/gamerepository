@@ -4,32 +4,33 @@
 #include <SFML/System.hpp>
 #include <iostream>
 #include "Game.h"
-class Menu
+class Instruction
 {
 private:
 	sf::RenderWindow* window;
 
 	sf::Font font;
-	sf::Text menuText[4];
+	sf::Text instructionText;
+	sf::Text backText;
 
 	//swiat
 	sf::Texture worldBackgroundTex;
 	sf::Sprite worldBachground;
 
-		//funkcje prywatne
-		void initVision();
+	//funkcje prywatne
+	void initVision();
 public:
-		 Menu();
-		~Menu();
-				
-		void run();
-				
-		void updatePollEvent();
-		void updateInput();
-		void updateVision();
+	Instruction();
+	~Instruction();
 
-		void update();
-		void render();
+
+	void run();
+
+
+	void updatePollEvent();
+	void updateInput();
 	
+	void update();
+	void render();
 };
 

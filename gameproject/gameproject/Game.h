@@ -25,6 +25,7 @@ private:
 	//interface
 	sf::Font font;
 	sf::Text pointText;
+	sf::Text f1ToHelpText;
 	sf::Text gameOverText;//over
 	sf::Text helpText;
 
@@ -68,7 +69,7 @@ private:
 	
 	void initTextures();
 	void initGUI();
-	void initWorld();
+	void initBackground();
 	void initSystems();
 	void initPlayer();
 	void initEnemies(); 
@@ -95,7 +96,7 @@ public:
 	void updatePollEvent();
 	void updateInput();
 	void updateGUI();
-	void updateWorld();
+	//void updateBackground();
 	void updateCollision();
 	void updateBullets();
 	//void updateEnemies();
@@ -104,7 +105,7 @@ public:
 	void updateCombat();
 	void update();
 	void renderGUI();
-	void renderWorld();
+	void renderBackground();
 	void render();
 };
 

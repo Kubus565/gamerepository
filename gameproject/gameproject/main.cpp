@@ -5,6 +5,7 @@
 #include <time.h>
 #include "Game.h"
 #include "Menu.h"
+#include "Instruction.h"
 
 struct config
 {
@@ -23,6 +24,9 @@ int main()
 
 	Menu menu;
 	menu.run();
+
+	Instruction ins;
+	ins.run();
 	//int config = menu.run();
 	
 	Game game(c1.level, c1.points, c1.hp);
