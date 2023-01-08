@@ -9,6 +9,7 @@
 
 struct config
 {
+	//wartosci poczatkowe do wczytania
 	int points = 666;
 	int level = 1;
 	float spawnlevel = 0.5f; // 0.5f do 2.5f

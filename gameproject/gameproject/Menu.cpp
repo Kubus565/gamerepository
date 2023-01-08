@@ -70,13 +70,13 @@ void Menu::run()
 
 void Menu::updatePollEvent()
 {
-	sf::Event e2;
-	while (this->window->pollEvent(e2))
+	sf::Event e1;
+	while (this->window->pollEvent(e1))
 	{
 		//mozna to w jednym ifie TODO
-		if (e2.Event::type == sf::Event::Closed)
+		if (e1.Event::type == sf::Event::Closed)
 			this->window->close();
-		if (e2.Event::KeyPressed && e2.Event::key.code == sf::Keyboard::Escape)
+		if (e1.Event::KeyPressed && e1.Event::key.code == sf::Keyboard::Escape)
 			this->window->close();
 	}
 }

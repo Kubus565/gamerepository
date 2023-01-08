@@ -24,11 +24,15 @@ private:
 	//interface
 	sf::Font font;
 	sf::Text pointText;
+	sf::Text levelText;
 	sf::Text f1ToHelpText;
 	sf::Text gameOverText;//over
 	sf::Text helpText;
 
 	bool isf1press;
+	
+	bool changedPoints1000;
+	bool changedPoints2000;
 
 	unsigned speed = 1;
 	//swiat
@@ -81,6 +85,8 @@ public:
 	~Game();
 
 	const bool& getHelp() const;
+	const bool& getChangedPoints1000() const;
+	const bool& getChangedPoints2000() const;
 	const int& getStartHp() const;
 
 	void run();

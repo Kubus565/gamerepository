@@ -27,8 +27,18 @@ void Game::initGUI()
 	//wlaczenie punktora
 	this->pointText.setPosition(600.f, 25.f);
 	this->pointText.setFont(this->font);
-	this->pointText.setCharacterSize(30); //wielkosc czcionki
+	this->pointText.setCharacterSize(40); //wielkosc czcionki
 	this->pointText.setFillColor(sf::Color::White); //kolor czcionki
+	this->pointText.setOutlineThickness(1.f);
+	this->pointText.setOutlineColor(sf::Color::Blue);
+
+	//level
+	this->levelText.setPosition(600.f, 100.f);
+	this->levelText.setFont(this->font);
+	this->levelText.setCharacterSize(40); //wielkosc czcionki
+	this->levelText.setFillColor(sf::Color::White); //kolor czcionki
+	this->levelText.setOutlineThickness(1.f);
+	this->levelText.setOutlineColor(sf::Color::Red);
 	
 	// f1
 	this->f1ToHelpText.setPosition(600.f, 585.f);
@@ -93,7 +103,7 @@ Game::Game(float spawnlevel_, int points_, int hp_)
 	this->window = mainWindow.getWindow();
 
 	this->points = points_;
-	//this->level = level_;
+	this->level = 1;
 	this->spawnlevel = spawnlevel_;
 	this->hp = hp_;
 
@@ -104,6 +114,8 @@ Game::Game(float spawnlevel_, int points_, int hp_)
 	this->initPolice();
 	this->initLine();
 	this->isf1press = false;
+	this->changedPoints1000 = false;
+	this->changedPoints2000 = false;
 }
 
 Game::~Game()
@@ -145,6 +157,14 @@ const bool& Game::getHelp() const
 {
 	return this->isf1press;
 }
+const bool& Game::getChangedPoints1000() const
+{
+	return this->changedPoints1000;
+}
+const bool& Game::getChangedPoints2000() const
+{
+	return this->changedPoints2000;
+}
 const int& Game::getStartHp() const
 {
 	return this->hp;
@@ -160,8 +180,6 @@ void Game::run()
 		this->f1Listener(); //Mateusz od komentuje
 
 		if(this->player->getHp() > 0 && !isf1press)	//over
-
-		
 
 		this->update();
 	
@@ -223,9 +241,13 @@ void Game::f1Listener()
 }
 void Game::updateGUI()
 {
-	std::stringstream ss; //liczba punktow
-	ss << "Punkty: " << this->points;
-	this->pointText.setString(ss.str());
+	std::stringstream pp; //liczba punktow
+	pp << "Score: " << this->points;
+	this->pointText.setString(pp.str());  
+
+	std::stringstream ll; //level
+	ll << "Level: " << this->level;
+	this->levelText.setString(ll.str());
 
 	//aktualizacja paska hp
 	float hpPercent = static_cast<float>(this->player->getHp()) / this->player->getHpMax();
@@ -401,6 +423,7 @@ void Game::update()
 void Game::renderGUI()
 {
 	this->window->draw(this->pointText);
+	this->window->draw(this->levelText);
 	this->window->draw(this->f1ToHelpText);
 	this->window->draw(this->playerHpBarBack); //hp
 	this->window->draw(this->playerHpBar);
@@ -449,21 +472,22 @@ void Game::render()
 		this->window->draw(this->helpText);	
 	
 	
-	if (this->points >= 1000 && this->points < 2000 && changedPoints1000 == false)
+	if (this->points >= 1000 && this->points < 2000 && this->getChangedPoints1000() == false)
 	{
 		spawnlevel += 1.0f;
-		std::cout << spawnlevel << "\n";
-		//level = 2;
-		changedPoints1000 = true;
+		//std::cout << spawnlevel << "\n";
+		level = 2;
+		this->changedPoints1000 = true;
 	}
-	if (this->points >= 2000 && this->points < 3000 && changedPoints2000 == false)
+	if (this->points >= 2000 && this->points < 3000 && this->getChangedPoints2000() == false)
 	{
 		spawnlevel += 1.0f;
-		//level = 3;
-		changedPoints2000 = true;
+		//std::cout << spawnlevel << "\n";
+		level = 3;
+		this->changedPoints2000 = true;
 	}
 
-
+	 
 	this->window->display();
 }
 #pragma endregion
