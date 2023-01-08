@@ -9,7 +9,7 @@ void Police::initVariables()
 	this->hpMax = 10;
 	this->hp = this->hpMax;
 	this->damage = 10;
-	this->points = 100;
+	this->points = 100;//punkty za zabojstwo policji
 }
 
 Police::Police(sf::Texture* texture, float pos_x, float pos_y, int level_)

@@ -1,4 +1,5 @@
 #include "Game.h"
+
 #pragma region Game_inicjalizacja
 //Funkcje prywatne
 //void Game::initWindow()
@@ -86,13 +87,14 @@ void Game::initLine()
 #pragma endregion
 // koniec initów %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Game::Game(int level_, int points_, int hp_)
+Game::Game(float spawnlevel_, int points_, int hp_)
 {
 	MainWindow mainWindow("Game");
 	this->window = mainWindow.getWindow();
 
 	this->points = points_;
-	this->level = level_;
+	//this->level = level_;
+	this->spawnlevel = spawnlevel_;
 	this->hp = hp_;
 
 	this->initTextures();
@@ -150,12 +152,17 @@ const int& Game::getStartHp() const
 void Game::run()
 {
 	//while (this->window->isOpen())
-		while (this->points < 3000 )
+	bool changedPoints1000 = false;// zeby zmieni³o sie tylko raz
+	bool changedPoints2000 = false;
+	while (this->points < 3000 )
 	{
 		this->updatePollEvent();	//over
 		this->f1Listener(); //Mateusz od komentuje
 
 		if(this->player->getHp() > 0 && !isf1press)	//over
+
+		
+
 		this->update();
 	
 	this->render();
@@ -274,7 +281,7 @@ void Game::updateBullets()
 void Game::updatePolice()
 {
 	//respienie
-	this->policeSpawnTimer += 2.5f;//0.5f, im wiecej tym wiecej policji
+	this->policeSpawnTimer += this->spawnlevel;//0.5f, im wiecej tym wiecej policji
 	if (this->policeSpawnTimer >= this->policeSpawnTimerMax)
 	{
 		this->polices.push_back(new Police(this->textures["POLICE"], rand() % 212 + 44, -100, level)); //zeby policje nie tworzy³y sie na srodku
@@ -437,8 +444,24 @@ void Game::render()
 	//Game over //over
 	if (this->player->getHp() <= 0)	//over
 		this->window->draw(this->gameOverText);	//over
+	//f1
 	if (this->getHelp() == true)
 		this->window->draw(this->helpText);	
+	
+	
+	if (this->points >= 1000 && this->points < 2000 && changedPoints1000 == false)
+	{
+		spawnlevel += 1.0f;
+		std::cout << spawnlevel << "\n";
+		//level = 2;
+		changedPoints1000 = true;
+	}
+	if (this->points >= 2000 && this->points < 3000 && changedPoints2000 == false)
+	{
+		spawnlevel += 1.0f;
+		//level = 3;
+		changedPoints2000 = true;
+	}
 
 
 	this->window->display();

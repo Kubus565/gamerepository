@@ -11,7 +11,7 @@ struct config
 {
 	int points = 666;
 	int level = 1;
-	int spawnlevel;
+	float spawnlevel = 0.5f; // 0.5f do 2.5f
 	int hp = 100; // max to 100
 
 };
@@ -28,7 +28,7 @@ int main()
 	Instruction inst;
 	inst.run();
 	
-	Game game(conf.level, conf.points, conf.hp);
+	Game game(conf.spawnlevel, conf.points, conf.hp);
 	game.run();
 
 

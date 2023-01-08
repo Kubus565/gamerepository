@@ -39,6 +39,7 @@ private:
 	unsigned points;
 	int hp;
 	int level;
+	float spawnlevel;
 
 	//gracz
 	Player* player;
@@ -75,7 +76,7 @@ private:
 
 
 public:
-	Game(int level_, int points_, int hp);
+	Game(float spawnlevel_, int points_, int hp);
 	
 	~Game();
 
