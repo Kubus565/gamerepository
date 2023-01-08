@@ -13,7 +13,7 @@ void Instruction::initVision()
 	this->instructionText.setFont(this->font);
 	this->instructionText.setCharacterSize(50); //wielkosc czcionki
 	this->instructionText.setFillColor(sf::Color::Blue); //kolor czcionki
-	this->instructionText.setOutlineThickness(2.f); // obramowania
+	this->instructionText.setOutlineThickness(1.f); // obramowania
 	this->instructionText.setOutlineColor(sf::Color::White);
 	this->instructionText.setString("Don't get caught by the police\nJust shoot them all!");
 	this->instructionText.setPosition(80.f, 250.f);
@@ -39,58 +39,38 @@ Instruction::~Instruction()
 	delete this->window;
 }
 
-//tu int
-void Instruction::run()
+
+bool Instruction::run()
 {
 	while (this->window->isOpen())
 	{
-		this->updatePollEvent();	//over
+		//this->updatePollEvent();
+		sf::Event e2;
+		while (this->window->pollEvent(e2))
+		{
+			//mozna to w jednym ifie TODO
+			if (e2.Event::type == sf::Event::Closed)
+				this->window->close();
+			if (e2.Event::KeyPressed && e2.Event::key.code == sf::Keyboard::Escape)
+				this->window->close();
+		}
 
-		//if (this->player->getHp() > 0 && !isf1press)	//over
-		this->update();
+		//this->update();
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		{
+			//this->window->close();
+			return true;
+		}
 
-		this->render();
-	}
-	//return this->level
-}
+		//this->render();
+		this->window->clear();
+		this->window->draw(this->worldBachground);
+		this->window->draw(this->instructionText);
+		this->window->draw(this->backText);
 
-void Instruction::updatePollEvent()
-{
-	sf::Event e2;
-	while (this->window->pollEvent(e2))
-	{
-		//mozna to w jednym ifie TODO
-		if (e2.Event::type == sf::Event::Closed)
-			this->window->close();
-		if (e2.Event::KeyPressed && e2.Event::key.code == sf::Keyboard::Escape)
-			this->window->close();
-	}
-}
-void Instruction::updateInput()
-{
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-	{
-		sf::Vector2i position = sf::Mouse::getPosition();
-		std::cout << position.x << " " << position.y << "\n";
 
+		this->window->display();
 	}
 
 }
 
-void Instruction::update()
-{
-	this->updateInput();
-	
-}
-void Instruction::render()
-{
-	this->window->clear();
-
-	//this->renderVision();
-	this->window->draw(this->worldBachground);
-	this->window->draw(this->instructionText);
-	this->window->draw(this->backText);
-	
-
-	this->window->display();
-}

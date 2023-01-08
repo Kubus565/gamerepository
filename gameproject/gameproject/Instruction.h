@@ -24,13 +24,7 @@ public:
 	~Instruction();
 
 
-	void run();
+	bool run();
 
-
-	void updatePollEvent();
-	void updateInput();
-	
-	void update();
-	void render();
 };
 

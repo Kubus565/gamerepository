@@ -4,6 +4,7 @@
 #include <SFML/System.hpp>
 #include <iostream>
 #include "Game.h"
+#include "Instruction.h"
 class Menu
 {
 private:
@@ -12,6 +13,17 @@ private:
 	sf::Font font;
 	sf::Text menuText[4];
 
+	struct config
+	{
+		//wartosci poczatkowe do wczytania
+		int points = 69;
+		//int level = 1;
+		float spawnlevel = 0.5f; // 0.5f do 2.5f
+		int hp = 100; // max to 100
+
+	};
+
+	config  conf;
 	//swiat
 	sf::Texture worldBackgroundTex;
 	sf::Sprite worldBachground;
@@ -22,14 +34,9 @@ public:
 		 Menu();
 		~Menu();
 				
-		void run();
-				
-		void updatePollEvent();
-		void updateInput();
-		void updateVision();
-
-		void update();
-		void render();
+		//void run();
+		int run();
+	
 	
 };
 

@@ -12,7 +12,7 @@ void Menu::initVision()
 	//this->worldBachground.setColor(sf::Color(106, 166, 62));
 
 	this->menuText[0].setFont(this->font); 
-	this->menuText[0].setCharacterSize(100); //wielkosc czcionki
+	this->menuText[0].setCharacterSize(120); //wielkosc czcionki
 	this->menuText[0].setFillColor(sf::Color::Blue); //kolor czcionki
 	this->menuText[0].setOutlineThickness(2.f); // obramowania
 	this->menuText[0].setOutlineColor(sf::Color::White); 
@@ -21,19 +21,25 @@ void Menu::initVision()
 
 	this->menuText[1].setFont(this->font);
 	this->menuText[1].setCharacterSize(50); //wielkosc czcionki
-	this->menuText[1].setFillColor(sf::Color::Blue); //kolor czcionki
+	this->menuText[1].setFillColor(sf::Color::White); //kolor czcionki
+	this->menuText[1].setOutlineThickness(1.f); // obramowania
+	this->menuText[1].setOutlineColor(sf::Color::Blue);
 	this->menuText[1].setString("1 New Game");
 	this->menuText[1].setPosition(80.f, 250.f);
 
 	this->menuText[2].setFont(this->font);
 	this->menuText[2].setCharacterSize(50); //wielkosc czcionki
-	this->menuText[2].setFillColor(sf::Color::Blue); //kolor czcionki
+	this->menuText[2].setFillColor(sf::Color::White); //kolor czcionki
+	this->menuText[2].setOutlineThickness(1.f); // obramowania
+	this->menuText[2].setOutlineColor(sf::Color::Blue);
 	this->menuText[2].setString("2 Load last game");
 	this->menuText[2].setPosition(80.f, 330.f);
 
 	this->menuText[3].setFont(this->font);
 	this->menuText[3].setCharacterSize(50); //wielkosc czcionki
-	this->menuText[3].setFillColor(sf::Color::Blue); //kolor czcionki
+	this->menuText[3].setFillColor(sf::Color::White); //kolor czcionki
+	this->menuText[3].setOutlineThickness(1.f); // obramowania
+	this->menuText[3].setOutlineColor(sf::Color::Blue);
 	this->menuText[3].setString("3 instruction and control");
 	this->menuText[3].setPosition(80.f, 410.f);
 
@@ -54,70 +60,63 @@ Menu::~Menu()
 }
 
 //tu int
-void Menu::run()
+//void Menu::run()
+//{
+//	while (this->window->isOpen())
+//	{
+//		this->updatePollEvent();	//over
+//
+//		this->update();
+//		this->render();
+//	}
+//}
+
+int Menu::run()//TODO zamienic int na void
 {
 	while (this->window->isOpen())
 	{
-		this->updatePollEvent();	//over
-		
-		//if (this->player->getHp() > 0 && !isf1press)	//over
-			this->update();
+		//updatePollEvent();	
+		sf::Event e1;
+		while (this->window->pollEvent(e1))
+		{
+			//mozna to w jednym ifie TODO
+			if (e1.Event::type == sf::Event::Closed)
+				this->window->close();
+			if (e1.Event::KeyPressed && e1.Event::key.code == sf::Keyboard::Escape)
+				this->window->close();
+		}
 
-		this->render();
-	}
-	//return this->level
-}
-
-void Menu::updatePollEvent()
-{
-	sf::Event e1;
-	while (this->window->pollEvent(e1))
-	{
-		//mozna to w jednym ifie TODO
-		if (e1.Event::type == sf::Event::Closed)
+		//update();
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
+		{
+			//return 1;
 			this->window->close();
-		if (e1.Event::KeyPressed && e1.Event::key.code == sf::Keyboard::Escape)
-			this->window->close();
+			
+			Game game(conf.spawnlevel, conf.points, conf.hp);
+			game.run();
+			
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
+		{
+			//return 2;
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
+		{
+			//return 3;
+			Instruction inst;
+			if (inst.run() == true)
+				break;
+		}
+		//render();
+		this->window->clear();
+		this->window->draw(this->worldBachground);
+		this->window->draw(this->menuText[0]);
+		this->window->draw(this->menuText[1]);
+		this->window->draw(this->menuText[2]);
+		this->window->draw(this->menuText[3]);
+		this->window->display();
 	}
-}
-
-void Menu::updateInput()
-{
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-	{
-		sf::Vector2i position = sf::Mouse::getPosition();
-		std::cout << position.x<< " " << position.y << "\n";
-
-	}
+	return 0;
 	
 }
-
-void Menu::updateVision()
-{
-	std::stringstream ss; //liczba punktow
-	ss << "Punkty: " << 69;
-	//this->menuText.setString(ss.str());
-
-}
-
-void Menu::update()
-{
-	this->updateInput();
-	this->updateVision();
-	
-}
-void Menu::render()
-{
-	this->window->clear();
-	
-	//this->renderVision();
-	this->window->draw(this->worldBachground);
-	this->window->draw(this->menuText[0]);
-	this->window->draw(this->menuText[1]);
-	this->window->draw(this->menuText[2]);
-	this->window->draw(this->menuText[3]);
-	
-	this->window->display();
-}
-
 

@@ -49,20 +49,21 @@ void Game::initGUI()
 					
 				//over
 	this->gameOverText.setFont(this->font);
-	this->gameOverText.setCharacterSize(100); //wielkosc czcionki
+	this->gameOverText.setCharacterSize(150); //wielkosc czcionki
 	this->gameOverText.setFillColor(sf::Color::Red); //kolor czcionki
 	this->gameOverText.setString("Game Over!");
 	this->gameOverText.setPosition(
 		this->window->getSize().x / 2.f - this->gameOverText.getGlobalBounds().width / 2.f,
 		this->window->getSize().y / 2.f - this->gameOverText.getGlobalBounds().height / 2.f); // napis na srodku
-
+	this->gameOverText.setOutlineThickness(3.f);
+	this->gameOverText.setOutlineColor(sf::Color::White);
 	//strona help
 	this->helpText.setPosition(70.f, 30.f);
 	this->helpText.setFont(this->font);
 	this->helpText.setCharacterSize(60); //wielkosc czcionki
 	this->helpText.setOutlineThickness(1.f);
-	this->helpText.setOutlineColor(sf::Color::White);
-	this->helpText.setFillColor(sf::Color::Blue); //kolor czcionki
+	this->helpText.setOutlineColor(sf::Color::Blue);
+	this->helpText.setFillColor(sf::Color::White); //kolor czcionki
 	this->helpText.setString("Help F1 \nMove up W\nMove down S\nMove left A\nMove right D\nShoot! SPACE\nSave level L\n");
 																							  
 																							  //player GUI, HP
@@ -103,8 +104,8 @@ Game::Game(float spawnlevel_, int points_, int hp_)
 	this->window = mainWindow.getWindow();
 
 	this->points = points_;
-	this->level = 1;
-	this->spawnlevel = spawnlevel_;
+	this->level = 1;//1  2  3
+	this->spawnlevel = spawnlevel_;// 0.5, 1.5, 2.5
 	this->hp = hp_;
 
 	this->initTextures();
@@ -172,8 +173,8 @@ const int& Game::getStartHp() const
 void Game::run()
 {
 	//while (this->window->isOpen())
-	bool changedPoints1000 = false;// zeby zmieni³o sie tylko raz
-	bool changedPoints2000 = false;
+	//bool changedPoints1000 = false;// zeby zmieni³o sie tylko raz
+	//bool changedPoints2000 = false;
 	while (this->points < 3000 )
 	{
 		this->updatePollEvent();	//over
