@@ -5,7 +5,7 @@
 #include <sstream>
 #include "Player.h"
 #include "Bullet.h"
-#include "Enemy.h"
+//#include "Enemy.h"
 #include "Police.h"
 #include "Line.h"
 #include "MainWindow.h"
@@ -39,6 +39,7 @@ private:
 	//system
 	unsigned points;
 	int hp;
+	int level;
 
 	//gracz
 	Player* player;
@@ -48,9 +49,9 @@ private:
 	sf::RectangleShape playerHpBarBack;
 
 	//wrogowie
-	float spawnTimer;
-	float spawnTimerMax;
-	std::vector<Enemy*> enemies;
+	//float spawnTimer;
+	//float spawnTimerMax;
+	//std::vector<Enemy*> enemies;
 
 	//police
 	float policeSpawnTimer;
@@ -72,7 +73,7 @@ private:
 	void initBackground();
 	void initSystems();
 	void initPlayer();
-	void initEnemies(); 
+	//void initEnemies(); 
 	void initPolice(); //do police
 	void initLine(); //do lini
 	void initHp(int hp);

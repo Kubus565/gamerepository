@@ -69,19 +69,19 @@ void Game::initBackground()
 		std::cout << "ERROR::GAMECPP::Blad ladowania tla" << "\n";
 	this->worldBachground.setTexture(this->worldBackgroundTex);
 }
-void Game::initSystems()
-{
-	this->points = 0;
-}
+//void Game::initSystems()
+//{
+//	//this->points = 0;
+//}
 void Game::initPlayer()
 {
 	this->player = new Player(window->getSize().x/2 - 52.f, window->getSize().y / 2 - 71.f, hp);
 }
-void Game::initEnemies()
-{
-	this->spawnTimerMax = 50.f;
-		this->spawnTimer = this->spawnTimerMax;
-}
+//void Game::initEnemies()
+//{
+//	this->spawnTimerMax = 50.f;
+//		this->spawnTimer = this->spawnTimerMax;
+//}
 void Game::initPolice()
 {
 	this->policeSpawnTimerMax = 50.f; //im mniej tym wiecej policji
@@ -92,28 +92,31 @@ void Game::initLine()
 	this->lineSpawnTimerMax = 50.f;
 	this->lineSpawnTimer = this->lineSpawnTimerMax;
 }
-void Game::initHp(int hp_)
-{
-	this->hp = hp_;
-}
+//void Game::initHp(int hp_)
+//{
+//	this->hp = hp_;
+//}
 #pragma endregion
 // koniec initów %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Game::Game(int level_, int points_, int health_)
+Game::Game(int level_, int points_, int hp_)
 {
 	MainWindow mainWindow("Graa");
 	this->window = mainWindow.getWindow();
 	//this->speed = s1.speed;
 	this->points = points_;
-	this->initHp(health_);
+	this->level = level_;
+	this->hp = hp_;
+
+	//this->initHp(health_);
 	
 	//this->initWindow();
 	this->initTextures();
 	this->initGUI();
 	this->initBackground();
-	this->initSystems(); //punkty
+	//this->initSystems(); //punkty
 	this->initPlayer();
-	this->initEnemies();
+	//this->initEnemies();
 	this->initPolice();
 	this->initLine();
 	this->isf1press = false;
@@ -405,26 +408,26 @@ void Game::updateLine()
 void Game::updateCombat() // sprawdza w³asnie usuwanego przeciwnika i patrzy na nastepny pocisk
 {
 	//do wrogow
-	for (int i = 0; i < this->enemies.size(); i++)
-	{
-		bool enemy_deleted = false;
-		for (size_t k = 0; k < this->bullets.size() && enemy_deleted == false; k++) //sprawdzacz: je¿eli pocisk zabi³ kogos to omijamy ponizsza petle i przechodzimy do nastepnego wroga
-		{
-			if (this->enemies[i]->getBounds().intersects(this->bullets[k]->getBounds()))
-			{
-				//punkty za zabojstwo
-				this->points += this->enemies[i]->getPoints();
+	//for (int i = 0; i < this->enemies.size(); i++)
+	//{
+	//	bool enemy_deleted = false;
+	//	for (size_t k = 0; k < this->bullets.size() && enemy_deleted == false; k++) //sprawdzacz: je¿eli pocisk zabi³ kogos to omijamy ponizsza petle i przechodzimy do nastepnego wroga
+	//	{
+	//		if (this->enemies[i]->getBounds().intersects(this->bullets[k]->getBounds()))
+	//		{
+	//			//punkty za zabojstwo
+	//			this->points += this->enemies[i]->getPoints();
 
-				delete this->enemies[i];
-				this->enemies.erase(this->enemies.begin() + i);
+	//			delete this->enemies[i];
+	//			this->enemies.erase(this->enemies.begin() + i);
 
-				delete this->bullets[k];
-				this->bullets.erase(this->bullets.begin() + k);
-				
-				enemy_deleted = true;
-			}
-		}
-	}
+	//			delete this->bullets[k];
+	//			this->bullets.erase(this->bullets.begin() + k);
+	//			
+	//			enemy_deleted = true;
+	//		}
+	//	}
+	//}
 	//do policji
 	for (int i = 0; i < this->polices.size(); i++)
 	{

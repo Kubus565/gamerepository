@@ -9,8 +9,7 @@
 
 struct config
 {
-	int points = 0;
-	int speed = 1;
+	int points = 666;
 	int level = 1;
 	int hp = 100;
 
