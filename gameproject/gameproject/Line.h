@@ -14,7 +14,7 @@ private:
 
 
 public:
-    Line(float pos_x, float pos_y);
+    Line(float pos_x, float pos_y, int level_);
     ~Line();
 
     const sf::FloatRect getBounds() const;

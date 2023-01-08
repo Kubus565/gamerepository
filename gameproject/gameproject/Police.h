@@ -24,7 +24,7 @@ private:
    
 
 public:
-    Police(sf::Texture* texture, float pos_x, float pos_y);
+    Police(sf::Texture* texture, float pos_x, float pos_y, int level_);
     ~Police();
     
     const sf::FloatRect getBounds() const;

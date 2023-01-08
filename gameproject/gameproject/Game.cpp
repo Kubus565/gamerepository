@@ -48,19 +48,19 @@ void Game::initGUI()
 	//strona help
 	this->helpText.setPosition(70.f, 30.f);
 	this->helpText.setFont(this->font);
-	this->helpText.setCharacterSize(40); //wielkosc czcionki
+	this->helpText.setCharacterSize(60); //wielkosc czcionki
 	this->helpText.setOutlineThickness(1.f);
 	this->helpText.setOutlineColor(sf::Color::White);
 	this->helpText.setFillColor(sf::Color::Blue); //kolor czcionki
 	this->helpText.setString("Help F1 \nMove up W\nMove down S\nMove left A\nMove right D\nShoot! SPACE\nSave level L\n");
 																							  
 																							  //player GUI, HP
-	this->playerHpBar.setSize(sf::Vector2f(300.f, 25.f)); //pasek ¿ycia //hp
-	this->playerHpBar.setFillColor(sf::Color::Red);
-	this->playerHpBar.setPosition(sf::Vector2f(20.f, 20.f));
+	this->playerHpBar.setSize(sf::Vector2f(800.f, 25.f)); //pasek ¿ycia //hp
+	this->playerHpBar.setFillColor(sf::Color(247, 25, 35));
+	this->playerHpBar.setPosition(sf::Vector2f(0.f, 575.f));
 
 	this->playerHpBarBack = this->playerHpBar;
-	this->playerHpBarBack.setFillColor(sf::Color(25, 25, 25, 200));
+	this->playerHpBarBack.setFillColor(sf::Color(25, 25, 25, 20));
 
 }
 void Game::initBackground()
@@ -69,19 +69,10 @@ void Game::initBackground()
 		std::cout << "ERROR::GAMECPP::Blad ladowania tla" << "\n";
 	this->worldBachground.setTexture(this->worldBackgroundTex);
 }
-//void Game::initSystems()
-//{
-//	//this->points = 0;
-//}
 void Game::initPlayer()
 {
 	this->player = new Player(window->getSize().x/2 - 52.f, window->getSize().y / 2 - 71.f, hp);
 }
-//void Game::initEnemies()
-//{
-//	this->spawnTimerMax = 50.f;
-//		this->spawnTimer = this->spawnTimerMax;
-//}
 void Game::initPolice()
 {
 	this->policeSpawnTimerMax = 50.f; //im mniej tym wiecej policji
@@ -89,34 +80,25 @@ void Game::initPolice()
 }
 void Game::initLine()
 {
-	this->lineSpawnTimerMax = 50.f;
+	this->lineSpawnTimerMax = 50.f; //im mniej tym wiecej lini
 	this->lineSpawnTimer = this->lineSpawnTimerMax;
 }
-//void Game::initHp(int hp_)
-//{
-//	this->hp = hp_;
-//}
 #pragma endregion
 // koniec initów %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Game::Game(int level_, int points_, int hp_)
 {
-	MainWindow mainWindow("Graa");
+	MainWindow mainWindow("Game");
 	this->window = mainWindow.getWindow();
-	//this->speed = s1.speed;
+
 	this->points = points_;
 	this->level = level_;
 	this->hp = hp_;
 
-	//this->initHp(health_);
-	
-	//this->initWindow();
 	this->initTextures();
 	this->initGUI();
 	this->initBackground();
-	//this->initSystems(); //punkty
 	this->initPlayer();
-	//this->initEnemies();
 	this->initPolice();
 	this->initLine();
 	this->isf1press = false;
@@ -171,7 +153,7 @@ void Game::run()
 		while (this->points < 3000 )
 	{
 		this->updatePollEvent();	//over
-		this->keyListener(); //Mateusz od komentuje
+		this->f1Listener(); //Mateusz od komentuje
 
 		if(this->player->getHp() > 0 && !isf1press)	//over
 		this->update();
@@ -223,7 +205,7 @@ void Game::updateInput()
 }
 
 //funkcja mateusza
-void Game::keyListener()
+void Game::f1Listener()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::F1))
 	{
@@ -239,9 +221,8 @@ void Game::updateGUI()
 	this->pointText.setString(ss.str());
 
 	//aktualizacja paska hp
-	//this->player->setHp(5); //test paska hp
 	float hpPercent = static_cast<float>(this->player->getHp()) / this->player->getHpMax();
-	this->playerHpBar.setSize(sf::Vector2f(300.f * hpPercent, this->playerHpBar.getSize().y));
+	this->playerHpBar.setSize(sf::Vector2f(800.f * hpPercent, this->playerHpBar.getSize().y));
 
 }
 
@@ -290,49 +271,14 @@ void Game::updateBullets()
 		++counter; // mala optymalizacja wzgledem counter++
 	}
 }
-//void Game::updateEnemies()
-//{
-//	//respienie
-//	this->spawnTimer += 0.5f;
-//	if (this->spawnTimer >= this->spawnTimerMax)
-//	{
-//		this->enemies.push_back(new Enemy(rand() % this->window->getSize().x - 20.f,  -100));
-//		this->spawnTimer = 0.f;
-//	}
-//	//aktualizacja
-//	unsigned counter = 0;
-//	for (auto* enemy : this->enemies)
-//	{
-//		enemy->update();
-//
-//		//usuwanie wrogow gdy wyjedzie z ekranu
-//		if (enemy->getBounds().top > this->window->getSize().y)
-//		{
-//			//usuwanie wrogow
-//			delete this->enemies.at(counter);
-//			this->enemies.erase(this->enemies.begin() + counter);
-//
-//			//std::cout << this->bullets.size() << "\n";
-//		}
-//		//jezeli wrog dotknie gracza
-//		else if (enemy->getBounds().intersects(this->player->getBounds())) 
-//		{
-//			this->player->loseHp(this->enemies.at(counter)->getDamage()); //end
-//			
-//			delete this->enemies.at(counter);
-//			this->enemies.erase(this->enemies.begin() + counter);
-//		}
-//		++counter; // mala optymalizacja wzgledem counter++
-//	}
-//}
 void Game::updatePolice()
 {
 	//respienie
-	this->policeSpawnTimer += 0.5f;
+	this->policeSpawnTimer += 2.5f;//0.5f, im wiecej tym wiecej policji
 	if (this->policeSpawnTimer >= this->policeSpawnTimerMax)
 	{
-		this->polices.push_back(new Police(this->textures["POLICE"], rand() % 212 + 44, -100)); //zeby policje nie tworzy³y sie na srodku
-		this->polices.push_back(new Police(this->textures["POLICE"], rand() % 199 + 454, -200));
+		this->polices.push_back(new Police(this->textures["POLICE"], rand() % 212 + 44, -100, level)); //zeby policje nie tworzy³y sie na srodku
+		this->polices.push_back(new Police(this->textures["POLICE"], rand() % 199 + 454, -200, level));
 		this->policeSpawnTimer = 0.f;
 	}
 	//aktualizacja
@@ -383,10 +329,10 @@ void Game::updateLine()
 	this->lineSpawnTimer += 1.2f;// 0.5f odleglosc pomiedzy liniami, im mniej tym wieksza
 	if (this->lineSpawnTimer >= this->policeSpawnTimerMax)
 	{
-		this->lines.push_back(new Line( 142 - 2, -25)); //miejsce lini 1 pas
-		this->lines.push_back(new Line( 251 - 2, -25));
-		this->lines.push_back(new Line( 550 - 2, -25)); //miejsce lini 2 pas
-		this->lines.push_back(new Line( 657 - 2, -25));
+		this->lines.push_back(new Line( 142 - 2, -25, level*3)); //miejsce lini 1 pas
+		this->lines.push_back(new Line( 251 - 2, -25, level*3));
+		this->lines.push_back(new Line( 550 - 2, -25, level*3)); //miejsce lini 2 pas
+		this->lines.push_back(new Line( 657 - 2, -25, level*3));
 		this->lineSpawnTimer = 0.f;
 	}
 	//aktualizacja
@@ -407,27 +353,7 @@ void Game::updateLine()
 }
 void Game::updateCombat() // sprawdza w³asnie usuwanego przeciwnika i patrzy na nastepny pocisk
 {
-	//do wrogow
-	//for (int i = 0; i < this->enemies.size(); i++)
-	//{
-	//	bool enemy_deleted = false;
-	//	for (size_t k = 0; k < this->bullets.size() && enemy_deleted == false; k++) //sprawdzacz: je¿eli pocisk zabi³ kogos to omijamy ponizsza petle i przechodzimy do nastepnego wroga
-	//	{
-	//		if (this->enemies[i]->getBounds().intersects(this->bullets[k]->getBounds()))
-	//		{
-	//			//punkty za zabojstwo
-	//			this->points += this->enemies[i]->getPoints();
 
-	//			delete this->enemies[i];
-	//			this->enemies.erase(this->enemies.begin() + i);
-
-	//			delete this->bullets[k];
-	//			this->bullets.erase(this->bullets.begin() + k);
-	//			
-	//			enemy_deleted = true;
-	//		}
-	//	}
-	//}
 	//do policji
 	for (int i = 0; i < this->polices.size(); i++)
 	{
@@ -454,18 +380,14 @@ void Game::updateCombat() // sprawdza w³asnie usuwanego przeciwnika i patrzy na 
 #pragma endregion
 void Game::update()
 {
-	//usuwam pollEvent bo jest wyzej
-	//this->updatePollEvent();
-	this->updateInput(); //Mateusz komentuje
+	this->updateInput(); //Mat komentuje
 	this->player->update();
 	this->updateCollision();
 	this->updateBullets();
-	//this->updateEnemies();
 	this->updatePolice();
 	this->updateLine();
 	this->updateCombat();
 	this->updateGUI();
-	//this->updateWorld();
 }
 
 #pragma region Rendery

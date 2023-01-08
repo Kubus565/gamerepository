@@ -8,13 +8,14 @@ void Police::initVariables()
 
 	this->hpMax = 10;
 	this->hp = this->hpMax;
-	this->damage = 1;
+	this->damage = 10;
 	this->points = 100;
 }
 
-Police::Police(sf::Texture* texture, float pos_x, float pos_y)
+Police::Police(sf::Texture* texture, float pos_x, float pos_y, int level_)
 {
 	this->initVariables();
+	//this->scrollingSpeed = (float)level_;
 	this->sprite.setTexture(*texture);
 	this->sprite.setPosition(pos_x, pos_y);
 	//this->sprite.setScale(1.f, -1.f);

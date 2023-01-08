@@ -5,7 +5,6 @@
 #include <sstream>
 #include "Player.h"
 #include "Bullet.h"
-//#include "Enemy.h"
 #include "Police.h"
 #include "Line.h"
 #include "MainWindow.h"
@@ -48,11 +47,7 @@ private:
 	sf::RectangleShape playerHpBar;
 	sf::RectangleShape playerHpBarBack;
 
-	//wrogowie
-	//float spawnTimer;
-	//float spawnTimerMax;
-	//std::vector<Enemy*> enemies;
-
+	
 	//police
 	float policeSpawnTimer;
 	float policeSpawnTimerMax;
@@ -71,12 +66,9 @@ private:
 	void initTextures();
 	void initGUI();
 	void initBackground();
-	void initSystems();
 	void initPlayer();
-	//void initEnemies(); 
 	void initPolice(); //do police
 	void initLine(); //do lini
-	void initHp(int hp);
 	
 	
 	
@@ -92,15 +84,13 @@ public:
 
 	void run();
 	
-	void keyListener();
+	void f1Listener();
 
 	void updatePollEvent();
 	void updateInput();
 	void updateGUI();
-	//void updateBackground();
 	void updateCollision();
 	void updateBullets();
-	//void updateEnemies();
 	void updatePolice(); //do police
 	void updateLine(); 
 	void updateCombat();
