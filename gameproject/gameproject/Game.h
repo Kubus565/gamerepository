@@ -31,8 +31,8 @@ private:
 
 	bool isf1press;
 	
-	bool changedPoints1000;
-	bool changedPoints2000;
+	//bool changedPoints1000;
+	//bool changedPoints2000;
 
 	unsigned speed = 1;
 	//swiat
@@ -40,7 +40,8 @@ private:
 	sf::Sprite worldBachground;
 
 	//system
-	unsigned points;
+	//unsigned points;
+	int points;
 	int hp;
 	int level;
 	float spawnlevel;
@@ -85,8 +86,8 @@ public:
 	~Game();
 
 	const bool& getHelp() const;
-	const bool& getChangedPoints1000() const;
-	const bool& getChangedPoints2000() const;
+	//const bool& getChangedPoints1000() const;
+	//const bool& getChangedPoints2000() const;
 	const int& getStartHp() const;
 
 	void run();

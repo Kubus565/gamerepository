@@ -16,7 +16,7 @@ private:
 	struct config
 	{
 		//wartosci poczatkowe do wczytania
-		int points = 69;
+		int points = 100;
 		//int level = 1;
 		float spawnlevel = 0.5f; // 0.5f do 2.5f
 		int hp = 100; // max to 100

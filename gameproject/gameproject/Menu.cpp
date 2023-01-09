@@ -16,7 +16,7 @@ void Menu::initVision()
 	this->menuText[0].setFillColor(sf::Color::Blue); //kolor czcionki
 	this->menuText[0].setOutlineThickness(2.f); // obramowania
 	this->menuText[0].setOutlineColor(sf::Color::White); 
-	this->menuText[0].setString("Police pulp!");
+	this->menuText[0].setString("Police 7 siege!"); //tytu³ gry
 	this->menuText[0].setPosition(80.f, 40.f); 
 
 	this->menuText[1].setFont(this->font);

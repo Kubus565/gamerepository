@@ -41,9 +41,9 @@ void Game::initGUI()
 	this->levelText.setOutlineColor(sf::Color::Red);
 	
 	// f1
-	this->f1ToHelpText.setPosition(600.f, 585.f);
+	this->f1ToHelpText.setPosition(520.f, 500.f);
 	this->f1ToHelpText.setFont(this->font);
-	this->f1ToHelpText.setCharacterSize(30); //wielkosc czcionki
+	this->f1ToHelpText.setCharacterSize(40); //wielkosc czcionki
 	this->f1ToHelpText.setFillColor(sf::Color::White); //kolor czcionki
 	this->f1ToHelpText.setString("press f1 to help");
 					
@@ -67,12 +67,15 @@ void Game::initGUI()
 	this->helpText.setString("Help F1 \nMove up W\nMove down S\nMove left A\nMove right D\nShoot! SPACE\nSave level L\n");
 																							  
 																							  //player GUI, HP
-	this->playerHpBar.setSize(sf::Vector2f(800.f, 25.f)); //pasek ¿ycia //hp
+	this->playerHpBar.setSize(sf::Vector2f(700.f, 25.f)); //pasek ¿ycia //hp
 	this->playerHpBar.setFillColor(sf::Color(247, 25, 35));
-	this->playerHpBar.setPosition(sf::Vector2f(0.f, 575.f));
+	this->playerHpBar.setPosition(sf::Vector2f(50.f, 550.f));
+	this->playerHpBar.setOutlineThickness(2);
+	this->playerHpBar.setOutlineColor(sf::Color::Black);
+
 
 	this->playerHpBarBack = this->playerHpBar;
-	this->playerHpBarBack.setFillColor(sf::Color(25, 25, 25, 20));
+	this->playerHpBarBack.setFillColor(sf::Color(25, 25, 25, 70));
 
 }
 void Game::initBackground()
@@ -104,7 +107,8 @@ Game::Game(float spawnlevel_, int points_, int hp_)
 	this->window = mainWindow.getWindow();
 
 	this->points = points_;
-	this->level = 1;//1  2  3
+	this->level =  (int)(spawnlevel - 0.5);//1  2  3
+	//this->lastLevel = level - 1;
 	this->spawnlevel = spawnlevel_;// 0.5, 1.5, 2.5
 	this->hp = hp_;
 
@@ -115,8 +119,8 @@ Game::Game(float spawnlevel_, int points_, int hp_)
 	this->initPolice();
 	this->initLine();
 	this->isf1press = false;
-	this->changedPoints1000 = false;
-	this->changedPoints2000 = false;
+	//this->changedPoints1000 = false;
+	//this->changedPoints2000 = false;
 }
 
 Game::~Game()
@@ -158,24 +162,17 @@ const bool& Game::getHelp() const
 {
 	return this->isf1press;
 }
-const bool& Game::getChangedPoints1000() const
-{
-	return this->changedPoints1000;
-}
-const bool& Game::getChangedPoints2000() const
-{
-	return this->changedPoints2000;
-}
+
 const int& Game::getStartHp() const
 {
 	return this->hp;
 }
 void Game::run()
 {
-	//while (this->window->isOpen())
+	while (this->window->isOpen())
 	//bool changedPoints1000 = false;// zeby zmieni³o sie tylko raz
 	//bool changedPoints2000 = false;
-	while (this->points < 3000 )
+	//while (this->points < 3000 )
 	{
 		this->updatePollEvent();	//over
 		this->f1Listener(); //Mateusz od komentuje
@@ -250,9 +247,11 @@ void Game::updateGUI()
 	ll << "Level: " << this->level;
 	this->levelText.setString(ll.str());
 
+	
+
 	//aktualizacja paska hp
 	float hpPercent = static_cast<float>(this->player->getHp()) / this->player->getHpMax();
-	this->playerHpBar.setSize(sf::Vector2f(800.f * hpPercent, this->playerHpBar.getSize().y));
+	this->playerHpBar.setSize(sf::Vector2f(700.f * hpPercent, this->playerHpBar.getSize().y));
 
 }
 
@@ -338,6 +337,7 @@ void Game::updatePolice()
 			//usuwanie policji
 			delete this->polices.at(counter);
 			this->polices.erase(this->polices.begin() + counter);
+			this->points -= rand() % 15 + 5; //odejmowanie punktów  od 5 do 20
 
 			//std::cout << this->bullets.size() << "\n";
 		}
@@ -473,19 +473,31 @@ void Game::render()
 		this->window->draw(this->helpText);	
 	
 	
-	if (this->points >= 1000 && this->points < 2000 && this->getChangedPoints1000() == false)
+	//if (this->points >= 1000 && this->points < 2000 && this->getChangedPoints1000() == false)
+	//{
+	//	spawnlevel += 1.0f;
+	//	//std::cout << spawnlevel << "\n";
+	//	level = 2;
+	//	this->changedPoints1000 = true;
+	//}
+	//if (this->points >= 2000 && this->points < 3000 && this->getChangedPoints2000() == false)
+	//{
+	//	spawnlevel += 1.0f;
+	//	//std::cout << spawnlevel << "\n";
+	//	level = 3;
+	//	this->changedPoints2000 = true;
+	//}
+	for (int i = 0; i < 20; i++)
 	{
-		spawnlevel += 1.0f;
-		//std::cout << spawnlevel << "\n";
-		level = 2;
-		this->changedPoints1000 = true;
-	}
-	if (this->points >= 2000 && this->points < 3000 && this->getChangedPoints2000() == false)
-	{
-		spawnlevel += 1.0f;
-		//std::cout << spawnlevel << "\n";
-		level = 3;
-		this->changedPoints2000 = true;
+		if (this->points >= 1000 * i && this->points < 1000 * (i + 1) )
+		{
+			if (level != i+1)
+			{
+				level = i+1;
+				spawnlevel += 1.0f;
+			}
+		}
+
 	}
 
 	 
