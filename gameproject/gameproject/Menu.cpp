@@ -59,35 +59,35 @@ Menu::~Menu()
 	delete this->window;
 }
 
-void Menu::fileWritting()
-{
-	FILE* file = fopen("game.txt", "wb");
-	fwrite(&config.points, sizeof(int), 1, file);
-	fwrite(&config.hp, sizeof(int), 1, file);
-	fclose(file);
-}
+//void Menu::fileWritting()
+//{
+//	FILE* file = fopen("game.txt", "wb");
+//	fwrite(&config.points, sizeof(int), 1, file);
+//	fwrite(&config.hp, sizeof(int), 1, file);
+//	fclose(file);
+//}
 
-void Menu::fileReading()
-{
-	FILE* file = fopen("game.txt", "rb");
-	int hpFromFile, pointsFromFile;
-	float spawnlevelFromFile;
-	//fread(&conf.points, sizeof(int), 1, file);
-	//fread(&conf.hp, sizeof(int), 1, file);
-	fread(&spawnlevelFromFile, sizeof(int), 1, file);
-	fread(&pointsFromFile, sizeof(int), 1, file);
-	fread(&hpFromFile, sizeof(int), 1, file);
-	//printf("HP: %d\nLevel: %d\n", hp, level);
-	//std::cout << "hp: " << hpp << " punkty: " << pooi;
-	config.spawnlevel = spawnlevelFromFile;
-	config.points = pointsFromFile;
-	config.hp = hpFromFile;
-	fclose(file);
-}
+//void Menu::fileReading()
+//{
+//	FILE* file = fopen("game.txt", "rb");
+//	int hpFromFile, pointsFromFile;
+//	float spawnlevelFromFile;
+//	//fread(&conf.points, sizeof(int), 1, file);
+//	//fread(&conf.hp, sizeof(int), 1, file);
+//	fread(&spawnlevelFromFile, sizeof(int), 1, file);
+//	fread(&pointsFromFile, sizeof(int), 1, file);
+//	fread(&hpFromFile, sizeof(int), 1, file);
+//	//printf("HP: %d\nLevel: %d\n", hp, level);
+//	//std::cout << "hp: " << hpp << " punkty: " << pooi;
+//	config.spawnlevel = spawnlevelFromFile;
+//	config.points = pointsFromFile;
+//	config.hp = hpFromFile;
+//	fclose(file);
+//}
 
 void Menu::reading()
 {
-	
+		
 		std::fstream file;
 		file.open("note.txt", std::ios::in);
 		if (file.good() == false)
@@ -95,11 +95,10 @@ void Menu::reading()
 			std::cout << "Plik nie istnieje!";
 			exit(0);
 		}
-		file >> config.spawnlevel;
-		file >> config.points;
-		file >> config.hp;
+		file >> config[1].spawnlevel;
+		file >> config[1].points;
+		file >> config[1].hp;
 		file.close();
-	
 }
 
 bool Menu::isFileEmpty(const char* file_name)
@@ -133,27 +132,34 @@ int Menu::run()//TODO zamienic int na void
 			//mozna to w jednym ifie TODO
 			if (e1.Event::type == sf::Event::Closed)
 				this->window->close();
+				
 			if (e1.Event::KeyPressed && e1.Event::key.code == sf::Keyboard::Escape)
-				this->window->close();
+				//this->window->close();
+				std::cout << " ";
+				
+
+			
 		}
 
 		//update();
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
 		{
-			//return 1;
-			this->window->close();
-			
-			Game game(startConfig.spawnlevel, startConfig.points, startConfig.hp);
+			//this->window->close();
+			config[0].spawnlevel = 0.5f;
+			config[0].points = 100;
+			config[0].hp = 100; // max to 100
+
+			Game game(config[0].spawnlevel, config[0].points, config[0].hp);
 			game.run();
-			std::cout << "nowa gra ";
+			//std::cout << "nowa gra ";
 
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
 		{
 				reading();
-				Game game(config.spawnlevel, config.points, config.hp);
+				Game game(config[1].spawnlevel, config[1].points, config[1].hp);
 				game.run();
-				std::cout << "z configu  odczyt )";
+				//std::cout << "z configu  odczyt )";
 			
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))

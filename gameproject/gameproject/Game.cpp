@@ -64,7 +64,13 @@ void Game::initGUI()
 	this->helpText.setOutlineThickness(1.f);
 	this->helpText.setOutlineColor(sf::Color::Blue);
 	this->helpText.setFillColor(sf::Color::White); //kolor czcionki
-	this->helpText.setString("Help F1 \nMove up W\nMove down S\nMove left A\nMove right D\nShoot! SPACE\nSave level L\n");
+	this->helpText.setString("Help F1 \nMove up W\nMove down S\nMove left A\nMove right D\nShoot! SPACE\nSave level ESC\n");
+	
+	this->helpRect.setPosition(60.f, 30.f);
+	this->helpRect.setSize(sf::Vector2f(350.f, 470.f));
+	this->helpRect.setFillColor(sf::Color(233, 244, 255, 210));
+	this->helpRect.setOutlineThickness(2);
+	this->helpRect.setOutlineColor(sf::Color::Blue);
 																							  
 																							  //player GUI, HP
 	this->playerHpBar.setSize(sf::Vector2f(700.f, 25.f)); //pasek ¿ycia //hp
@@ -479,7 +485,10 @@ void Game::render()
 		this->window->draw(this->gameOverText);	//over
 	//f1
 	if (this->getHelp() == true)
-		this->window->draw(this->helpText);	
+	{
+		this->window->draw(this->helpRect);
+		this->window->draw(this->helpText);
+	}
 	
 	
 	//if (this->points >= 1000 && this->points < 2000 && this->getChangedPoints1000() == false)

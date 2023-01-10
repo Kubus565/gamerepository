@@ -14,15 +14,15 @@ private:
 	sf::Font font;
 	sf::Text menuText[4];
 
-	struct startConfig
-	{
-		//wartosci poczatkowe do wczytania
-		float spawnlevel = 0.5f; // 0.5f do 2.5f
-		int points = 100;
-		int hp = 100; // max to 100
+	//struct startConfig //TODO zrobic z tych struktur tablice
+	//{
+	//	//wartosci poczatkowe do wczytania
+	//	float spawnlevel = 0.5f; // 0.5f do 2.5f
+	//	int points = 100;
+	//	int hp = 100; // max to 100
 
-	};
-	struct config
+	//};
+	struct Configuration
 	{
 		//miejsce na zmienne z pliku
 		float spawnlevel; // 0.5f do 2.5f
@@ -30,8 +30,11 @@ private:
 		int hp; // max to 100
 
 	};
-	config  config;
-	startConfig startConfig;
+	Configuration  config[2];
+	//config[0].points = 100;
+
+
+	//startConfig startConfig;
 
 	//swiat
 	sf::Texture worldBackgroundTex;

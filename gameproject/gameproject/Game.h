@@ -30,6 +30,7 @@ private:
 	sf::Text f1ToHelpText;
 	sf::Text gameOverText;//over
 	sf::Text helpText;
+	sf::RectangleShape helpRect;
 
 	bool isf1press;
 	
