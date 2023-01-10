@@ -1,4 +1,5 @@
 #pragma once
+#include <fstream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
@@ -13,17 +14,25 @@ private:
 	sf::Font font;
 	sf::Text menuText[4];
 
-	struct config
+	struct startConfig
 	{
 		//wartosci poczatkowe do wczytania
-		int points = 100;
-		//int level = 1;
 		float spawnlevel = 0.5f; // 0.5f do 2.5f
+		int points = 100;
 		int hp = 100; // max to 100
 
 	};
+	struct config
+	{
+		//miejsce na zmienne z pliku
+		float spawnlevel; // 0.5f do 2.5f
+		int points;
+		int hp; // max to 100
 
-	config  conf;
+	};
+	config  config;
+	startConfig startConfig;
+
 	//swiat
 	sf::Texture worldBackgroundTex;
 	sf::Sprite worldBachground;
@@ -34,6 +43,12 @@ public:
 		 Menu();
 		~Menu();
 				
+		void reading();
+
+		void fileWritting();
+		void fileReading();
+		bool isFileEmpty(const char* file_name);
+		
 		//void run();
 		int run();
 	

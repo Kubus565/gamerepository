@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "Menu.h"
 #include <iostream>
 void Menu::initVision()
@@ -43,14 +44,13 @@ void Menu::initVision()
 	this->menuText[3].setString("3 instruction and control");
 	this->menuText[3].setPosition(80.f, 410.f);
 
-	
-	
 }
 Menu::Menu()
 {
 	MainWindow menu("Menu");
 	this->window = menu.getWindow();
-	
+	//this->fileWritting();
+	//this->fileReading();
 	this->initVision();
 }
 
@@ -58,6 +58,57 @@ Menu::~Menu()
 {
 	delete this->window;
 }
+
+void Menu::fileWritting()
+{
+	FILE* file = fopen("game.txt", "wb");
+	fwrite(&config.points, sizeof(int), 1, file);
+	fwrite(&config.hp, sizeof(int), 1, file);
+	fclose(file);
+}
+
+void Menu::fileReading()
+{
+	FILE* file = fopen("game.txt", "rb");
+	int hpFromFile, pointsFromFile;
+	float spawnlevelFromFile;
+	//fread(&conf.points, sizeof(int), 1, file);
+	//fread(&conf.hp, sizeof(int), 1, file);
+	fread(&spawnlevelFromFile, sizeof(int), 1, file);
+	fread(&pointsFromFile, sizeof(int), 1, file);
+	fread(&hpFromFile, sizeof(int), 1, file);
+	//printf("HP: %d\nLevel: %d\n", hp, level);
+	//std::cout << "hp: " << hpp << " punkty: " << pooi;
+	config.spawnlevel = spawnlevelFromFile;
+	config.points = pointsFromFile;
+	config.hp = hpFromFile;
+	fclose(file);
+}
+
+void Menu::reading()
+{
+	
+		std::fstream file;
+		file.open("note.txt", std::ios::in);
+		if (file.good() == false)
+		{
+			std::cout << "Plik nie istnieje!";
+			exit(0);
+		}
+		file >> config.spawnlevel;
+		file >> config.points;
+		file >> config.hp;
+		file.close();
+	
+}
+
+bool Menu::isFileEmpty(const char* file_name)
+{
+	std::ifstream file(file_name, std::ios::binary);
+	return file.peek() == std::ifstream::traits_type::eof();
+}
+
+
 
 //tu int
 //void Menu::run()
@@ -92,13 +143,18 @@ int Menu::run()//TODO zamienic int na void
 			//return 1;
 			this->window->close();
 			
-			Game game(conf.spawnlevel, conf.points, conf.hp);
+			Game game(startConfig.spawnlevel, startConfig.points, startConfig.hp);
 			game.run();
-			
+			std::cout << "nowa gra ";
+
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
 		{
-			//return 2;
+				reading();
+				Game game(config.spawnlevel, config.points, config.hp);
+				game.run();
+				std::cout << "z configu  odczyt )";
+			
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
 		{

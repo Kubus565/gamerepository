@@ -8,6 +8,8 @@
 #include "Police.h"
 #include "Line.h"
 #include "MainWindow.h"
+#include "Menu.h"
+#include <cstdlib>//¿eby dzia³a³ exit(0)
 
 class Game
 {
@@ -41,10 +43,10 @@ private:
 
 	//system
 	//unsigned points;
+	float spawnlevel;
 	int points;
 	int hp;
 	int level;
-	float spawnlevel;
 
 	//gracz
 	Player* player;
@@ -76,9 +78,6 @@ private:
 	void initPolice(); //do police
 	void initLine(); //do lini
 	
-	
-	
-
 
 public:
 	Game(float spawnlevel_, int points_, int hp);
@@ -106,5 +105,8 @@ public:
 	void renderGUI();
 	void renderBackground();
 	void render();
+
+	void writting(float a, int b, int c);
+	
 };
 

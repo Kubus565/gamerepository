@@ -192,14 +192,23 @@ void Game::updatePollEvent()
 	while (this->window->pollEvent(e))
 	{
 		//mozna to w jednym ifie TODO
-		if (e.Event::type == sf::Event::Closed)
+		if (e.Event::type == sf::Event::Closed || e.Event::KeyPressed && e.Event::key.code == sf::Keyboard::Escape)
+		{
 			this->window->close();
-		if (e.Event::KeyPressed && e.Event::key.code == sf::Keyboard::Escape)
-			this->window->close();
+			//zapis do pliku przy zamykaniu
+			this->writting(this->spawnlevel, this->points, this->player->getHp());
+		}
+			
+		/*if (e.Event::KeyPressed && e.Event::key.code == sf::Keyboard::Escape)
+			this->window->close();*/
 	}
 }
 void Game::updateInput()
 {
+	//zapis do pliku
+	/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
+		this->writting(this->spawnlevel, this->points, this->hp);*/
+	
 	//Poruszanie graczem
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		this->player->move(-1.f, 0.f);
@@ -503,4 +512,14 @@ void Game::render()
 	 
 	this->window->display();
 }
+void Game::writting(float a, int b, int c)
+{
+	std::fstream file;
+	file.open("note.txt", std::ios::out); //ios::app gdybym chcia³ dopisywaæ
+	file << a << std::endl;
+	file << b << std::endl;
+	file << c << std::endl;
+	file.close();
+}
+
 #pragma endregion
