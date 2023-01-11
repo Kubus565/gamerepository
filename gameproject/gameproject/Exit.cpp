@@ -20,7 +20,7 @@ void Exit::createVision()
 	this->exitText.setFillColor(sf::Color::Blue); //kolor czcionki
 	this->exitText.setOutlineThickness(1.f); // obramowania
 	this->exitText.setOutlineColor(sf::Color::White);
-	this->exitText.setString("Are you sure want to exit?");
+	this->exitText.setString("Are you sure \nwant to exit?");
 	this->exitText.setPosition(40.f, 20.f);
 
 	this->choiceText[0].setFont(this->font);
@@ -28,24 +28,24 @@ void Exit::createVision()
 	this->choiceText[0].setFillColor(sf::Color::White); //kolor czcionki
 	this->choiceText[0].setOutlineThickness(1.f); // obramowania
 	this->choiceText[0].setOutlineColor(sf::Color::Red);
-	this->choiceText[0].setString("1 Save and exit");
-	this->choiceText[0].setPosition(40.f, 130.f);
+	this->choiceText[0].setString("Save and exit");
+	this->choiceText[0].setPosition(60.f, 130.f);
 
 	this->choiceText[1].setFont(this->font);
 	this->choiceText[1].setCharacterSize(30); //wielkosc czcionki
 	this->choiceText[1].setFillColor(sf::Color::White); //kolor czcionki
 	this->choiceText[1].setOutlineThickness(1.f); // obramowania
 	this->choiceText[1].setOutlineColor(sf::Color::Red);
-	this->choiceText[1].setString("2 Exit without saving");
-	this->choiceText[1].setPosition(40.f, 170.f);
+	this->choiceText[1].setString("Exit without saving");
+	this->choiceText[1].setPosition(60.f, 170.f);
 
 	this->choiceText[2].setFont(this->font);
 	this->choiceText[2].setCharacterSize(30); //wielkosc czcionki
 	this->choiceText[2].setFillColor(sf::Color::White); //kolor czcionki
 	this->choiceText[2].setOutlineThickness(1.f); // obramowania
 	this->choiceText[2].setOutlineColor(sf::Color::Red);
-	this->choiceText[2].setString("3 Back to Game");
-	this->choiceText[2].setPosition(40.f, 210.f);
+	this->choiceText[2].setString("Back to Game");
+	this->choiceText[2].setPosition(60.f, 210.f);
 }
 
 Exit::Exit()

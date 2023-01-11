@@ -41,7 +41,7 @@ void Menu::createVision()
 	this->menuText[3].setFillColor(sf::Color::White); //kolor czcionki
 	this->menuText[3].setOutlineThickness(1.f); // obramowania
 	this->menuText[3].setOutlineColor(sf::Color::Blue);
-	this->menuText[3].setString("`~ Instruction and control");
+	this->menuText[3].setString("3 Instruction and control");
 	this->menuText[3].setPosition(80.f, 410.f);
 
 }
@@ -69,7 +69,7 @@ void Menu::reading()
 		file >> config[1].hp;
 		file.close();
 }
-void Menu::run()//TODO zamienic int na void
+void Menu::run()
 {
 	while (this->window->isOpen())
 	{
@@ -77,13 +77,12 @@ void Menu::run()//TODO zamienic int na void
 		sf::Event e1;
 		while (this->window->pollEvent(e1))
 		{
-			//mozna to w jednym ifie TODO
 			if (e1.Event::type == sf::Event::Closed)
 				this->window->close();
 				
-			if (e1.Event::KeyPressed && e1.Event::key.code == sf::Keyboard::Escape)
-				//this->window->close();
-				std::cout << " ";			
+			//if (e1.Event::KeyPressed && e1.Event::key.code == sf::Keyboard::Escape)
+			//	//this->window->close();
+			//	std::cout << " ";			
 		}
 		//update
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
@@ -105,7 +104,7 @@ void Menu::run()//TODO zamienic int na void
 				game.run();
 				//std::cout << "z configu  odczyt )";
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tilde))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
 		{
 			//return 3;
 			Instruction inst;
