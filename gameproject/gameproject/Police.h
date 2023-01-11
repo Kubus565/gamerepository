@@ -28,8 +28,8 @@ public:
     ~Police();
     
     const sf::FloatRect getBounds() const;
-    const int& getPoints() const; //ile punktow da mi kazdy wrog
-    const int& getDamage() const;
+    int getPoints(); //ile punktow da mi kazdy wrog
+    int getDamage();
     
     //funkcje
     void update();

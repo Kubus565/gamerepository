@@ -20,8 +20,6 @@ Police::Police(sf::Texture* texture, float pos_x, float pos_y, int level_)
 
 	switch (direction)
 	{
-	
-	
 	case 1:
 		this->sprite.setRotation(90);
 		this->speedX = -(rand() % 2 + 1.f );
@@ -61,12 +59,12 @@ const sf::FloatRect Police::getBounds() const
 	return this->sprite.getGlobalBounds();
 }
 
-const int& Police::getPoints() const
+int Police::getPoints()
 {
 	return this->points;
 }
 
-const int& Police::getDamage() const
+int Police::getDamage()
 {
 	return this->damage;
 }
@@ -82,7 +80,7 @@ void Police::updateStop()
 	//std::cout << "S";
 }
 
-void Police::render(sf::RenderTarget* target)
+void Police::render(sf::RenderTarget* target) //wskaznik na cel renderowania
 {
 	target->draw(this->sprite);
 	//std::cout << "X";

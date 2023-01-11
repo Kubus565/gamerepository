@@ -26,14 +26,14 @@ private:
 	void createSprite();
 
 public:
-	Tank(const float x, const float y, int hpPlayer);
+	Tank(const float x, const float y, int hpTank);
 	~Tank();
 
 	//dostep
-	const sf::Vector2f& getPos() const;
-	const sf::FloatRect getBounds() const;
-	const int& getHp() const; //hp
-	const int& getHpMax() const;
+	sf::Vector2f getPos();
+	sf::FloatRect getBounds();
+	int getHp(); //hp
+	int getHpMax();
 
 	//modyfikacje
 	void setPosition(const sf::Vector2f pos);
@@ -43,7 +43,7 @@ public:
 
 	//funkcje
 	void move(const float dirX, const float dirY);
-	const bool canShoot();
+	bool canShoot();
 
 	void updateShoot();
 	void update();

@@ -71,12 +71,12 @@ private:
 
 	
 	//funkcje prywatne
-	//void initWindow();		//przypisanie wartosci poczatkowych
+			//przypisanie wartosci poczatkowych
 	
 	void createTextures();
 	void createVision();
 	void createBackground();
-	void createPlayer();
+	void createTank();
 	void createPolice(); //do police
 	void createLine(); //do lini
 	
@@ -86,8 +86,8 @@ public:
 	
 	~Game();
 
-	const bool& getHelp() const;
-	const int& getStartHp() const;
+	bool getHelp();
+	int getStartHp();
 
 	void run();
 	

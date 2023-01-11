@@ -7,7 +7,7 @@ void Tank::createVariables()
 	//predkosc gracza
 	this->movementSpeed = 10.f; //predkosc statku
 
-	this->shootCooldownMax = 10.f;
+	this->shootCooldownMax = 6.f; //10.f szybkostrzelnosc czo³gu
 	this->shootCooldown = this->shootCooldownMax;
 
 	this->hpMax = 100;  //hp
@@ -19,7 +19,7 @@ void Tank::createTexture()
 	//ladowanie tekstury
 	if (!this->texture.loadFromFile("Textures/tank.png"))
 	{
-		std::cout << "ERROR::player::initTexture::Nie mozna zaladowac tekstury" << std::endl;
+		std::cout << "ERROR::tank::createTexture::Nie mozna zaladowac tekstury" << std::endl;
 	}
 }
 
@@ -31,10 +31,10 @@ void Tank::createSprite()
 	//this->sprite.scale(0.1f, 0.1f);
 }
 
-Tank::Tank(const float x, const float y, int hpPlayer)
+Tank::Tank(const float x, const float y, int hpTank)
 {
 	this->createVariables();
-	this->hp = hpPlayer;
+	this->hp = hpTank;
 	this->createTexture();
 	this->createSprite();
 	this->sprite.setPosition(x, y);
@@ -44,20 +44,20 @@ Tank::~Tank()
 {
 }
 
-const sf::Vector2f& Tank::getPos() const
+sf::Vector2f Tank::getPos()
 {
 	return this->sprite.getPosition();
 }
 
-const sf::FloatRect Tank::getBounds() const
+sf::FloatRect Tank::getBounds()
 {
 	return this->sprite.getGlobalBounds();
 }
-const int& Tank::getHp() const  //hp
+int Tank::getHp()  //hp
 {
 	return this->hp;
 }
-const int& Tank::getHpMax() const  //hp
+int Tank::getHpMax()  //hp
 {
 	return this->hpMax;
 }
@@ -90,7 +90,7 @@ void Tank::move(const float dirX, const float dirY)
 	this->sprite.move(this->movementSpeed * dirX, this->movementSpeed * dirY);
 }
 
-const bool Tank::canShoot()
+bool Tank::canShoot()
 {
 	if (this->shootCooldown >= this->shootCooldownMax)
 	{

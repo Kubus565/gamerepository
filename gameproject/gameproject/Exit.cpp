@@ -10,7 +10,7 @@ void Exit::createVision()
 	if (!this->font.loadFromFile("Fonts/PixellettersFull.ttf"))
 		std::cout << "ERROR::GAME::Nie udalo sie zaladowac czcionki" << " \n";
 
-	if (!this->worldBackgroundTex.loadFromFile("textures/background2.png"))
+	if (!this->worldBackgroundTex.loadFromFile("textures/background3.png"))
 		std::cout << "ERROR::GAMECPP::Blad ladowania tla" << "\n";
 	this->worldBachground.setTexture(this->worldBackgroundTex);
 	//this->worldBachground.setColor(sf::Color(106, 166, 62));

@@ -2,7 +2,7 @@
 
 #pragma region Game_inicjalizacja
 //Funkcje prywatne
-//void Game::initWindow()
+//void Game::createWindow()
 //{
 //	//this->window = new sf::RenderWindow(sf::VideoMode(800, 600), "Gra", sf::Style::Close | sf::Style::Titlebar);
 //	////this->window->setFramerateLimit(144);
@@ -90,7 +90,7 @@ void Game::createBackground()
 		std::cout << "ERROR::GAMECPP::Blad ladowania tla" << "\n";
 	this->worldBachground.setTexture(this->worldBackgroundTex);
 }
-void Game::createPlayer()
+void Game::createTank()
 {
 	this->tank = new Tank(window->getSize().x/2 - 52.f, window->getSize().y / 2 - 71.f, hp);
 }
@@ -120,7 +120,7 @@ Game::Game(float spawnlevel_, int points_, int hp_)
 	this->createTextures();
 	this->createVision();
 	this->createBackground();
-	this->createPlayer();
+	this->createTank();
 	this->createPolice();
 	this->createLine();
 	this->isf1press = false;
@@ -162,12 +162,12 @@ Game::~Game()
 }
 
 //funkcje
-const bool& Game::getHelp() const
+bool Game::getHelp()
 {
 	return this->isf1press;
 }
 
-const int& Game::getStartHp() const
+int Game::getStartHp()
 {
 	return this->hp;
 }
@@ -199,7 +199,7 @@ void Game::updatePollEvent()
 		{
 			//this->window->close();
 			////zapis do pliku przy zamykaniu
-			//this->writting(this->spawnlevel, this->points, this->player->getHp());
+			//this->writting(this->spawnlevel, this->points, this->tank->getHp());
 			Exit exit;
 			//exit.run();
 
@@ -429,7 +429,6 @@ void Game::updateHit() // sprawdza w³asnie usuwanego przeciwnika i patrzy na nas
 	}
 
 }
-#pragma endregion
 void Game::update()
 {
 	this->updateInput(); //Mat komentuje
@@ -441,7 +440,7 @@ void Game::update()
 	this->updateHit();
 	this->updateVision();
 }
-
+#pragma endregion
 #pragma region Rendery
 void Game::renderVision()
 {
@@ -451,7 +450,6 @@ void Game::renderVision()
 	this->window->draw(this->playerHpBarBack); //hp
 	this->window->draw(this->playerHpBar);
 }
-
 void Game::renderBackground()
 {
 	this->window->draw(this->worldBachground);
