@@ -31,17 +31,13 @@ private:
 	sf::Sprite worldBachground;
 
 		//funkcje prywatne
-		void initVision();
+		void createVision();
 public:
 		 Menu();
 		~Menu();
 				
 		void reading();
-
-		//bool isFileEmpty(const char* file_name);
-		
-		//void run();
-		int run();
+		void run();
 	
 	
 };

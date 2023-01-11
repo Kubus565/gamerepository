@@ -3,7 +3,7 @@
 #include <map>
 #include <string>
 #include <sstream>
-#include "Player.h"
+#include "Tank.h"
 #include "Bullet.h"
 #include "Police.h"
 #include "Line.h"
@@ -51,7 +51,7 @@ private:
 	int level;
 
 	//gracz
-	Player* player;
+	Tank* tank;
 
 	//gracz GUI
 	sf::RectangleShape playerHpBar;
@@ -73,13 +73,12 @@ private:
 	//funkcje prywatne
 	//void initWindow();		//przypisanie wartosci poczatkowych
 	
-	void initTextures();
-	void initGUI();
-	
-	void initBackground();
-	void initPlayer();
-	void initPolice(); //do police
-	void initLine(); //do lini
+	void createTextures();
+	void createVision();
+	void createBackground();
+	void createPlayer();
+	void createPolice(); //do police
+	void createLine(); //do lini
 	
 
 public:
@@ -97,14 +96,14 @@ public:
 
 	void updatePollEvent();
 	void updateInput();
-	void updateGUI();
+	void updateVision();
 	void updateCollision();
 	void updateBullets();
 	void updatePolice(); 
 	void updateLine(); 
-	void updateCombat();
+	void updateHit();
 	void update();
-	void renderGUI();
+	void renderVision();
 	
 	void renderBackground();
 	void render();

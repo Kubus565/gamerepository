@@ -148,13 +148,10 @@
     <ClCompile Include="Instruction.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="main1.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Tank.cpp" />
     <ClCompile Include="Police.cpp" />
-    <ClCompile Include="testyzpasem.cpp" />
-    <ClCompile Include="trstdestruktora.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
@@ -164,7 +161,7 @@
     <ClInclude Include="Line.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="Menu.h" />
-    <ClInclude Include="Player.h" />
+    <ClInclude Include="Tank.h" />
     <ClInclude Include="Police.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

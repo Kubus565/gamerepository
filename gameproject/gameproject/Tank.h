@@ -4,7 +4,7 @@
 #include <SFML/System.hpp>
 #include <iostream>
 
-class Player
+class Tank
 {
 private:
 	sf::Sprite sprite;
@@ -12,8 +12,8 @@ private:
 
 	float movementSpeed;
 
-	float attackCooldown;
-	float attackCooldownMax;
+	float shootCooldown;
+	float shootCooldownMax;
 
 	int hp;
 	int hpMax;
@@ -21,13 +21,13 @@ private:
 	//tu nie moze byc  "="
 
 	//funkcje prywatne
-	void initVariables();
-	void initTexture();
-	void initSprite();
+	void createVariables();
+	void createTexture();
+	void createSprite();
 
 public:
-	Player(const float x, const float y, int hpPlayer);
-	~Player();
+	Tank(const float x, const float y, int hpPlayer);
+	~Tank();
 
 	//dostep
 	const sf::Vector2f& getPos() const;
@@ -43,9 +43,9 @@ public:
 
 	//funkcje
 	void move(const float dirX, const float dirY);
-	const bool canAttack();
+	const bool canShoot();
 
-	void updateAttack();
+	void updateShoot();
 	void update();
 	void render(sf::RenderTarget& target);
 

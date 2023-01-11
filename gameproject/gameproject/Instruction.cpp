@@ -1,5 +1,5 @@
 #include "Instruction.h"
-void Instruction::initVision()
+void Instruction::createVision()
 {
 	//ladowanie czcionek
 	if (!this->font.loadFromFile("Fonts/PixellettersFull.ttf"))
@@ -31,7 +31,7 @@ Instruction::Instruction()
 	MainWindow instructions("Instruction");
 	this->window = instructions.getWindow();
 
-	this->initVision();
+	this->createVision();
 }
 
 Instruction::~Instruction()

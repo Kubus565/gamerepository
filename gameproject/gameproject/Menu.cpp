@@ -1,7 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "Menu.h"
 #include <iostream>
-void Menu::initVision()
+void Menu::createVision()
 {
 	//ladowanie czcionek
 	if (!this->font.loadFromFile("Fonts/PixellettersFull.ttf"))
@@ -49,45 +49,14 @@ Menu::Menu()
 {
 	MainWindow menu("Menu");
 	this->window = menu.getWindow();
-	//this->fileWritting();
-	//this->fileReading();
-	this->initVision();
+	this->createVision();
 }
-
 Menu::~Menu()
 {
 	delete this->window;
 }
-
-//void Menu::fileWritting()
-//{
-//	FILE* file = fopen("game.txt", "wb");
-//	fwrite(&config.points, sizeof(int), 1, file);
-//	fwrite(&config.hp, sizeof(int), 1, file);
-//	fclose(file);
-//}
-
-//void Menu::fileReading()
-//{
-//	FILE* file = fopen("game.txt", "rb");
-//	int hpFromFile, pointsFromFile;
-//	float spawnlevelFromFile;
-//	//fread(&conf.points, sizeof(int), 1, file);
-//	//fread(&conf.hp, sizeof(int), 1, file);
-//	fread(&spawnlevelFromFile, sizeof(int), 1, file);
-//	fread(&pointsFromFile, sizeof(int), 1, file);
-//	fread(&hpFromFile, sizeof(int), 1, file);
-//	//printf("HP: %d\nLevel: %d\n", hp, level);
-//	//std::cout << "hp: " << hpp << " punkty: " << pooi;
-//	config.spawnlevel = spawnlevelFromFile;
-//	config.points = pointsFromFile;
-//	config.hp = hpFromFile;
-//	fclose(file);
-//}
-
 void Menu::reading()
 {
-		
 		std::fstream file;
 		file.open("note.txt", std::ios::in);
 		if (file.good() == false)
@@ -100,28 +69,7 @@ void Menu::reading()
 		file >> config[1].hp;
 		file.close();
 }
-
-//bool Menu::isFileEmpty(const char* file_name)
-//{
-//	std::ifstream file(file_name, std::ios::binary);
-//	return file.peek() == std::ifstream::traits_type::eof();
-//}
-
-
-
-//tu int
-//void Menu::run()
-//{
-//	while (this->window->isOpen())
-//	{
-//		this->updatePollEvent();	//over
-//
-//		this->update();
-//		this->render();
-//	}
-//}
-
-int Menu::run()//TODO zamienic int na void
+void Menu::run()//TODO zamienic int na void
 {
 	while (this->window->isOpen())
 	{
@@ -135,13 +83,9 @@ int Menu::run()//TODO zamienic int na void
 				
 			if (e1.Event::KeyPressed && e1.Event::key.code == sf::Keyboard::Escape)
 				//this->window->close();
-				std::cout << " ";
-				
-
-			
+				std::cout << " ";			
 		}
-
-		//update();
+		//update
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
 		{
 			//this->window->close();
@@ -160,16 +104,12 @@ int Menu::run()//TODO zamienic int na void
 				Game game(config[1].spawnlevel, config[1].points, config[1].hp);
 				game.run();
 				//std::cout << "z configu  odczyt )";
-			
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tilde))
 		{
 			//return 3;
 			Instruction inst;
-			/*if (inst.run() == true)
-				break;*/
 			inst.run();
-
 		}
 		//render();
 		this->window->clear();
@@ -180,7 +120,5 @@ int Menu::run()//TODO zamienic int na void
 		this->window->draw(this->menuText[3]);
 		this->window->display();
 	}
-	return 0;
-	
 }
 

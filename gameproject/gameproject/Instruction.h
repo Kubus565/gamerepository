@@ -18,13 +18,10 @@ private:
 	sf::Sprite worldBachground;
 
 	//funkcje prywatne
-	void initVision();
+	void createVision();
 public:
 	Instruction();
 	~Instruction();
-
-
 	void run();
-
 };
 

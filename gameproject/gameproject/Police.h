@@ -16,11 +16,11 @@ private:
     int damage;
     int points;
 
-    float speedX;
+    float speedX; // predkosc kazdego pojedynczego auta
     float speedY;
     float scrollingSpeed;
 
-    void initVariables();
+    void createVariables();
    
 
 public:

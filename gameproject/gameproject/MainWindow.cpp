@@ -6,8 +6,6 @@ MainWindow::MainWindow(std::string nameWindow)
 	//this->window->setFramerateLimit(144);
 	this->window->setFramerateLimit(60);
 	this->window->setVerticalSyncEnabled(false);
-
-	
 }
 
 sf::RenderWindow* MainWindow::getWindow()

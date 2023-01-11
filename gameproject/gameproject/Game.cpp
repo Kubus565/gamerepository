@@ -9,7 +9,7 @@
 //	//this->window->setFramerateLimit(60);
 //	//this->window->setVerticalSyncEnabled(false);
 //}
-void Game::initTextures()
+void Game::createTextures()
 {
 	this->textures["BULLET"] = new sf::Texture();
 	this->textures["BULLET"]->loadFromFile("Textures/bullet.png");
@@ -18,7 +18,7 @@ void Game::initTextures()
 	this->textures["LINE"] = new sf::Texture();
 	this->textures["LINE"]->loadFromFile("Textures/line.png");
 }
-void Game::initGUI()
+void Game::createVision()
 {
 	//ladowanie czcionek
 	if (!this->font.loadFromFile("Fonts/PixellettersFull.ttf"))
@@ -84,30 +84,28 @@ void Game::initGUI()
 	this->playerHpBarBack.setFillColor(sf::Color(25, 25, 25, 70));
 
 }
-
-void Game::initBackground()
+void Game::createBackground()
 {
 	if (!this->worldBackgroundTex.loadFromFile("textures/background1.png"))
 		std::cout << "ERROR::GAMECPP::Blad ladowania tla" << "\n";
 	this->worldBachground.setTexture(this->worldBackgroundTex);
 }
-void Game::initPlayer()
+void Game::createPlayer()
 {
-	this->player = new Player(window->getSize().x/2 - 52.f, window->getSize().y / 2 - 71.f, hp);
+	this->tank = new Tank(window->getSize().x/2 - 52.f, window->getSize().y / 2 - 71.f, hp);
 }
-void Game::initPolice()
+void Game::createPolice()
 {
 	this->policeSpawnTimerMax = 50.f; //im mniej tym wiecej policji
 	this->policeSpawnTimer = this->policeSpawnTimerMax;
 }
-void Game::initLine()
+void Game::createLine()
 {
 	this->lineSpawnTimerMax = 50.f; //im mniej tym wiecej lini
 	this->lineSpawnTimer = this->lineSpawnTimerMax;
 }
 #pragma endregion
-// koniec initów %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 Game::Game(float spawnlevel_, int points_, int hp_)
 {
 	MainWindow mainWindow("Game");
@@ -119,13 +117,12 @@ Game::Game(float spawnlevel_, int points_, int hp_)
 	this->spawnlevel = spawnlevel_;// 0.5, 1.5, 2.5
 	this->hp = hp_;
 
-	this->initTextures();
-	this->initGUI();
-	
-	this->initBackground();
-	this->initPlayer();
-	this->initPolice();
-	this->initLine();
+	this->createTextures();
+	this->createVision();
+	this->createBackground();
+	this->createPlayer();
+	this->createPolice();
+	this->createLine();
 	this->isf1press = false;
 	
 }
@@ -133,7 +130,7 @@ Game::Game(float spawnlevel_, int points_, int hp_)
 Game::~Game()
 {
 	delete this->window;
-	delete this->player;
+	delete this->tank;
 
 	//usuwanie tekstur
 	for (auto &i : this->textures)
@@ -184,17 +181,13 @@ void Game::run()
 		this->updatePollEvent();	//over
 		this->f1Listener(); //Mateusz od komentuje
 
-		if(this->player->getHp() > 0 && !isf1press)	//over
+		if(this->tank->getHp() > 0 && !isf1press)	//over
 
 		this->update();
 	
 	this->render();
 	}
 }
-
-
-
-
 #pragma region Updatingi
 void Game::updatePollEvent()
 {
@@ -213,7 +206,7 @@ void Game::updatePollEvent()
 			if (exit.run() == 1)
 			{
 				this->window->close();
-				this->writting(this->spawnlevel, this->points, this->player->getHp());
+				this->writting(this->spawnlevel, this->points, this->tank->getHp());
 			}
 			if (exit.run() == 2)
 			{
@@ -244,28 +237,20 @@ void Game::updateInput()
 	
 	//Poruszanie graczem
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		this->player->move(-1.f, 0.f);
+		this->tank->move(-1.f, 0.f);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		this->player->move(1.f, 0.f);
+		this->tank->move(1.f, 0.f);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		this->player->move(0.f, -1.f);
+		this->tank->move(0.f, -1.f);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		this->player->move(0.f, 1.f);
+		this->tank->move(0.f, 1.f);
 	
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && this->player->canAttack())
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && this->tank->canShoot())
 	{
 		this->bullets.push_back(new Bullet(this->textures["BULLET"], 
-		this->player->getPos().x + this->player->getBounds().width/2.f - 5.0f, 
-		this->player->getPos().y, 0.f, -1.f, 34.f)); //0.f, -1.f, 5.f kierunek kierunek predkosc pocisku
+		this->tank->getPos().x + this->tank->getBounds().width/2.f - 5.0f, 
+		this->tank->getPos().y, 0.f, -1.f, 34.f)); //0.f, -1.f, 5.f kierunek kierunek predkosc pocisku
 	}
-	//pomoc
-	//bool isf1press = false;
-	/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::F1))
-	{
-		isf1press =! isf1press;
-		
-	}*/
-
 }
 
 //funkcja mateusza
@@ -278,7 +263,7 @@ void Game::f1Listener()
 	}
 	else isf1press = false;
 }
-void Game::updateGUI()
+void Game::updateVision()
 {
 	std::stringstream pp; //liczba punktow
 	pp << "Score: " << this->points;
@@ -288,36 +273,32 @@ void Game::updateGUI()
 	ll << "Level: " << this->level;
 	this->levelText.setString(ll.str());
 
-	
-
 	//aktualizacja paska hp
-	float hpPercent = static_cast<float>(this->player->getHp()) / this->player->getHpMax();
+	float hpPercent = static_cast<float>(this->tank->getHp()) / this->tank->getHpMax();
 	this->playerHpBar.setSize(sf::Vector2f(700.f * hpPercent, this->playerHpBar.getSize().y));
-
 }
-
 void Game::updateCollision() //zeby pojazd nie wychodzi³ poza ekran
 {
 	//lewa granica swiata
-	if (this->player->getBounds().left < 0.f)
+	if (this->tank->getBounds().left < 0.f)
 	{
-		this->player->setPosition(0.f, this->player->getBounds().top);
+		this->tank->setPosition(0.f, this->tank->getBounds().top);
 	}
 	//prawa granica swiata
-	else if (this->player->getBounds().left + this->player->getBounds().width >= this->window->getSize().x )
+	else if (this->tank->getBounds().left + this->tank->getBounds().width >= this->window->getSize().x )
 	{
-		this->player->setPosition(this->window->getSize().x - this->player->getBounds().width, this->player->getBounds().top);
+		this->tank->setPosition(this->window->getSize().x - this->tank->getBounds().width, this->tank->getBounds().top);
 	}
 	//gorna granica swiata
-	if (this->player->getBounds().top < 0.f)
+	if (this->tank->getBounds().top < 0.f)
 	{
-		this->player->setPosition(this->player->getBounds().left, 0.f);
+		this->tank->setPosition(this->tank->getBounds().left, 0.f);
 	}
 	
 	//dolna granica swiata
-	else if (this->player->getBounds().top + this->player->getBounds().height >= this->window->getSize().y)
+	else if (this->tank->getBounds().top + this->tank->getBounds().height >= this->window->getSize().y)
 	{
-		this->player->setPosition(this->player->getBounds().left, this->window->getSize().y - this->player->getBounds().height);
+		this->tank->setPosition(this->tank->getBounds().left, this->window->getSize().y - this->tank->getBounds().height);
 	}
 	
 }
@@ -383,9 +364,9 @@ void Game::updatePolice()
 			//std::cout << this->bullets.size() << "\n";
 		}
 		//jezeli policja dotknie gracza
-		else if (police->getBounds().intersects(this->player->getBounds()))
+		else if (police->getBounds().intersects(this->tank->getBounds()))
 		{
-			this->player->loseHp(this->polices.at(counter)->getDamage()); //end
+			this->tank->loseHp(this->polices.at(counter)->getDamage()); //end
 
 			delete this->polices.at(counter);
 			this->polices.erase(this->polices.begin() + counter);
@@ -422,7 +403,7 @@ void Game::updateLine()
 		++counter; // mala optymalizacja wzgledem counter++
 	}
 }
-void Game::updateCombat() // sprawdza w³asnie usuwanego przeciwnika i patrzy na nastepny pocisk
+void Game::updateHit() // sprawdza w³asnie usuwanego przeciwnika i patrzy na nastepny pocisk
 {
 
 	//do policji
@@ -452,17 +433,17 @@ void Game::updateCombat() // sprawdza w³asnie usuwanego przeciwnika i patrzy na 
 void Game::update()
 {
 	this->updateInput(); //Mat komentuje
-	this->player->update();
+	this->tank->update();
 	this->updateCollision();
 	this->updateBullets();
 	this->updatePolice();
 	this->updateLine();
-	this->updateCombat();
-	this->updateGUI();
+	this->updateHit();
+	this->updateVision();
 }
 
 #pragma region Rendery
-void Game::renderGUI()
+void Game::renderVision()
 {
 	this->window->draw(this->pointText);
 	this->window->draw(this->levelText);
@@ -487,28 +468,19 @@ void Game::render()
 	{
 		line->render(this->window);
 	}
-
 	for (auto* bullet : this->bullets)
 	{
 		bullet->render(this->window);
 	}
-
-	/*for (auto* enemy : this->enemies)
-	{
-		enemy->render(this->window);
-	}*/
-	
 	for (auto* police : this->polices)
 	{
 		police->render(this->window);
 	}
-	
-
-	this->player->render(*this->window);
-	this->renderGUI();
+	this->tank->render(*this->window);
+	this->renderVision();
 
 	//Game over //over
-	if (this->player->getHp() <= 0)	//over
+	if (this->tank->getHp() <= 0)	//over
 		this->window->draw(this->gameOverText);	//over
 	//f1
 	if (this->getHelp() == true)
@@ -517,21 +489,6 @@ void Game::render()
 		this->window->draw(this->helpText);
 	}
 	
-	
-	//if (this->points >= 1000 && this->points < 2000 && this->getChangedPoints1000() == false)
-	//{
-	//	spawnlevel += 1.0f;
-	//	//std::cout << spawnlevel << "\n";
-	//	level = 2;
-	//	this->changedPoints1000 = true;
-	//}
-	//if (this->points >= 2000 && this->points < 3000 && this->getChangedPoints2000() == false)
-	//{
-	//	spawnlevel += 1.0f;
-	//	//std::cout << spawnlevel << "\n";
-	//	level = 3;
-	//	this->changedPoints2000 = true;
-	//}
 	for (int i = 0; i < 20; i++)
 	{
 		if (this->points >= 1000 * i && this->points < 1000 * (i + 1) )
@@ -545,7 +502,6 @@ void Game::render()
 
 	}
 
-	 
 	this->window->display();
 }
 void Game::writting(float a, int b, int c)

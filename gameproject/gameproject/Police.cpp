@@ -1,6 +1,6 @@
 #include "Police.h"
 
-void Police::initVariables()
+void Police::createVariables()
 {
 	
 	this->direction = rand() % 5 + 1; //wybor kierunku
@@ -14,7 +14,7 @@ void Police::initVariables()
 
 Police::Police(sf::Texture* texture, float pos_x, float pos_y, int level_)
 {
-	this->initVariables();
+	this->createVariables();
 	this->sprite.setTexture(*texture);
 	this->sprite.setPosition(pos_x, pos_y);
 
@@ -73,9 +73,6 @@ const int& Police::getDamage() const
 
 void Police::update()
 {
-	//ruch
-	//this->sprite.move(this->movementSpeed * this->direction);
-		
 	this->sprite.move(this->speedX,  this->speedY); //predkosc opadania
 }
 

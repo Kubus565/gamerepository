@@ -50,8 +50,6 @@ void Exit::createVision()
 
 Exit::Exit()
 {
-	
-
 	this->createVision();
 }
 
@@ -60,44 +58,16 @@ Exit::~Exit()
 	delete this->windowExit;
 }
 
-int Exit::run()
+int Exit::run() 
 {
 	while (this->windowExit->isOpen())
 	{
-		//this->updatePollEvent();
 		sf::Event e2;
 		while (this->windowExit->pollEvent(e2))
 		{
-			//mozna to w jednym ifie TODO
 			if (e2.Event::type == sf::Event::Closed)
 				this->windowExit->close();
-			/*if (e2.Event::KeyPressed && e2.Event::key.code == sf::Keyboard::Escape)
-				this->window->close();*/
 		}
-
-		//this->update();
-		/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
-		{
-			this->window->close();
-			std::cout << "teraz zapisz";
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
-		{
-			this->window->close();
-			int a;
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
-		{
-			this->window->close();
-		}*/
-		/*if (sf::Mouse::isButtonPressed(sf::Mouse::Left)
-			&& sf::Mouse::getPosition().x >= this->choiceText[2].getGlobalBounds().left
-			&& sf::Mouse::getPosition().x <= this->choiceText[2].getGlobalBounds().width)
-		{
-			std::cout << "CLICK!";
-		}*/
-		
-		
 			if (e2.type == sf::Event::MouseButtonPressed)
 			if (e2.mouseButton.button == sf::Mouse::Left)
 			{
@@ -106,11 +76,9 @@ int Exit::run()
 
 				if (textRect.contains(static_cast<sf::Vector2f>(mousePos)))
 				{
-					//std::cout << "Clicked on text 1!" << std::endl;
 					this->windowExit->close();
 					return 1;
 					//teraz trzeba zapisaæ
-
 				}
 			}
 			if (e2.type == sf::Event::MouseButtonPressed)
@@ -122,11 +90,8 @@ int Exit::run()
 				if (textRect.contains(static_cast<sf::Vector2f>(mousePos)))
 				{
 					//std::cout << "Clicked on text 2!" << std::endl;
-					//this->windowExit->close();
 					return 2;
 					this->windowExit->close();
-
-
 				}
 			}
 			if (e2.type == sf::Event::MouseButtonPressed)
@@ -137,15 +102,12 @@ int Exit::run()
 
 				if (textRect.contains(static_cast<sf::Vector2f>(mousePos)))
 				{
-					//std::cout << "Clicked on text!" << std::endl;
 					this->windowExit->close();
 					return 3;
 
 				}
 			}
-		
 
-		//this->render();
 		this->windowExit->clear();
 		this->windowExit->draw(this->worldBachground);
 		this->windowExit->draw(this->exitText);
