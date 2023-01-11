@@ -2,7 +2,6 @@
 
 void Police::createVariables()
 {
-	
 	this->direction = rand() % 5 + 1; //wybor kierunku
 	this->scrollingSpeed = 1;
 
