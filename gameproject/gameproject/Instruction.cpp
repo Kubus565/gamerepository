@@ -40,7 +40,7 @@ Instruction::~Instruction()
 }
 
 
-bool Instruction::run()
+void Instruction::run()
 {
 	while (this->window->isOpen())
 	{
@@ -58,8 +58,8 @@ bool Instruction::run()
 		//this->update();
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
-			//this->window->close();
-			return true;
+			this->window->close();
+			//return true;
 		}
 
 		//this->render();
@@ -71,6 +71,7 @@ bool Instruction::run()
 
 		this->window->display();
 	}
+	
 
 }
 

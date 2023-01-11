@@ -9,7 +9,8 @@
 #include "Line.h"
 #include "MainWindow.h"
 #include "Menu.h"
-#include <cstdlib>//¿eby dzia³a³ exit(0)
+#include "Exit.h"
+#include <cstdlib>//¿eby dzia³a³ exit(0) przy pliku
 
 class Game
 {
@@ -27,15 +28,15 @@ private:
 	sf::Font font;
 	sf::Text pointText;
 	sf::Text levelText;
-	sf::Text f1ToHelpText;
 	sf::Text gameOverText;//over
+	//do exit
+	
+	
+	sf::Text f1ToHelpText;
 	sf::Text helpText;
 	sf::RectangleShape helpRect;
 
 	bool isf1press;
-	
-	//bool changedPoints1000;
-	//bool changedPoints2000;
 
 	unsigned speed = 1;
 	//swiat
@@ -74,6 +75,7 @@ private:
 	
 	void initTextures();
 	void initGUI();
+	
 	void initBackground();
 	void initPlayer();
 	void initPolice(); //do police
@@ -86,11 +88,10 @@ public:
 	~Game();
 
 	const bool& getHelp() const;
-	//const bool& getChangedPoints1000() const;
-	//const bool& getChangedPoints2000() const;
 	const int& getStartHp() const;
 
 	void run();
+	
 	
 	void f1Listener();
 
@@ -99,11 +100,12 @@ public:
 	void updateGUI();
 	void updateCollision();
 	void updateBullets();
-	void updatePolice(); //do police
+	void updatePolice(); 
 	void updateLine(); 
 	void updateCombat();
 	void update();
 	void renderGUI();
+	
 	void renderBackground();
 	void render();
 

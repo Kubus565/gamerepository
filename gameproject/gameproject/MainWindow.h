@@ -10,9 +10,11 @@ class MainWindow
 private:
 	//okno
 	sf::RenderWindow* window;
+	
 
 public:
 	MainWindow(std::string MainWindow);
 	sf::RenderWindow* getWindow();
+	
 };
 

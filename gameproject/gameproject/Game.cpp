@@ -68,7 +68,7 @@ void Game::initGUI()
 	
 	this->helpRect.setPosition(60.f, 30.f);
 	this->helpRect.setSize(sf::Vector2f(350.f, 470.f));
-	this->helpRect.setFillColor(sf::Color(233, 244, 255, 210));
+	this->helpRect.setFillColor(sf::Color(30, 30, 30, 210));
 	this->helpRect.setOutlineThickness(2);
 	this->helpRect.setOutlineColor(sf::Color::Blue);
 																							  
@@ -84,6 +84,7 @@ void Game::initGUI()
 	this->playerHpBarBack.setFillColor(sf::Color(25, 25, 25, 70));
 
 }
+
 void Game::initBackground()
 {
 	if (!this->worldBackgroundTex.loadFromFile("textures/background1.png"))
@@ -120,13 +121,13 @@ Game::Game(float spawnlevel_, int points_, int hp_)
 
 	this->initTextures();
 	this->initGUI();
+	
 	this->initBackground();
 	this->initPlayer();
 	this->initPolice();
 	this->initLine();
 	this->isf1press = false;
-	//this->changedPoints1000 = false;
-	//this->changedPoints2000 = false;
+	
 }
 
 Game::~Game()
@@ -191,6 +192,9 @@ void Game::run()
 	}
 }
 
+
+
+
 #pragma region Updatingi
 void Game::updatePollEvent()
 {
@@ -200,9 +204,32 @@ void Game::updatePollEvent()
 		//mozna to w jednym ifie TODO
 		if (e.Event::type == sf::Event::Closed || e.Event::KeyPressed && e.Event::key.code == sf::Keyboard::Escape)
 		{
-			this->window->close();
-			//zapis do pliku przy zamykaniu
-			this->writting(this->spawnlevel, this->points, this->player->getHp());
+			//this->window->close();
+			////zapis do pliku przy zamykaniu
+			//this->writting(this->spawnlevel, this->points, this->player->getHp());
+			Exit exit;
+			//exit.run();
+
+			if (exit.run() == 1)
+			{
+				this->window->close();
+				this->writting(this->spawnlevel, this->points, this->player->getHp());
+			}
+			if (exit.run() == 2)
+			{
+				int b;
+				this->window->close();
+				
+				
+			}
+			if (exit.run() == 3)
+			{
+				this->window->close();
+				int a;
+			}
+			
+			//this->window->close();
+		
 		}
 			
 		/*if (e.Event::KeyPressed && e.Event::key.code == sf::Keyboard::Escape)
@@ -211,9 +238,9 @@ void Game::updatePollEvent()
 }
 void Game::updateInput()
 {
-	//zapis do pliku
-	/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
-		this->writting(this->spawnlevel, this->points, this->hp);*/
+	//zapis do pliku na F
+	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+	//	this->writting(this->spawnlevel, this->points, this->player->getHp());
 	
 	//Poruszanie graczem
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
@@ -224,8 +251,7 @@ void Game::updateInput()
 		this->player->move(0.f, -1.f);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 		this->player->move(0.f, 1.f);
-	//strelanie
-	//if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && this->player->canAttack())
+	
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && this->player->canAttack())
 	{
 		this->bullets.push_back(new Bullet(this->textures["BULLET"], 
@@ -444,6 +470,7 @@ void Game::renderGUI()
 	this->window->draw(this->playerHpBarBack); //hp
 	this->window->draw(this->playerHpBar);
 }
+
 void Game::renderBackground()
 {
 	this->window->draw(this->worldBachground);

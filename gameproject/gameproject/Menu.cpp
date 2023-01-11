@@ -41,7 +41,7 @@ void Menu::initVision()
 	this->menuText[3].setFillColor(sf::Color::White); //kolor czcionki
 	this->menuText[3].setOutlineThickness(1.f); // obramowania
 	this->menuText[3].setOutlineColor(sf::Color::Blue);
-	this->menuText[3].setString("3 instruction and control");
+	this->menuText[3].setString("`~ Instruction and control");
 	this->menuText[3].setPosition(80.f, 410.f);
 
 }
@@ -101,11 +101,11 @@ void Menu::reading()
 		file.close();
 }
 
-bool Menu::isFileEmpty(const char* file_name)
-{
-	std::ifstream file(file_name, std::ios::binary);
-	return file.peek() == std::ifstream::traits_type::eof();
-}
+//bool Menu::isFileEmpty(const char* file_name)
+//{
+//	std::ifstream file(file_name, std::ios::binary);
+//	return file.peek() == std::ifstream::traits_type::eof();
+//}
 
 
 
@@ -162,12 +162,14 @@ int Menu::run()//TODO zamienic int na void
 				//std::cout << "z configu  odczyt )";
 			
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tilde))
 		{
 			//return 3;
 			Instruction inst;
-			if (inst.run() == true)
-				break;
+			/*if (inst.run() == true)
+				break;*/
+			inst.run();
+
 		}
 		//render();
 		this->window->clear();

@@ -4,27 +4,27 @@
 #include <SFML/System.hpp>
 #include <iostream>
 #include "Game.h"
-class Instruction
+class Exit
 {
 private:
-	sf::RenderWindow* window;
+	sf::RenderWindow* windowExit;
 
 	sf::Font font;
-	sf::Text instructionText;
-	sf::Text backText;
+	sf::Text exitText;
+	sf::Text choiceText[3];
 
 	//swiat
 	sf::Texture worldBackgroundTex;
 	sf::Sprite worldBachground;
 
 	//funkcje prywatne
-	void initVision();
+	void createVision();
 public:
-	Instruction();
-	~Instruction();
+	Exit();
+	~Exit();
 
 
-	void run();
+	int run();
 
 };
 

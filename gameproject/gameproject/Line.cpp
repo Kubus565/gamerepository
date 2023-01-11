@@ -3,7 +3,7 @@
 void Line::initVariables()
 {
 	this->scrollingSpeed = 3.f;//1
-	//this->scrollingSpeed = level_;//1
+	
 }
 
 //Line::Line(sf::Texture* texture, float pos_x, float pos_y)
